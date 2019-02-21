@@ -51,4 +51,12 @@ public class ProfessorSession {
     public void setGroup(Group group) {
         this.group = group;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

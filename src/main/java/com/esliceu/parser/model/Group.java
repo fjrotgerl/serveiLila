@@ -2,22 +2,26 @@ package com.esliceu.parser.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "grupo")
 public class Group {
 
-    public Group(String code){
+    public Group() {}
+
+    public Group(Integer code){
         this.code = code;
     }
 
     @Id
-    private String code;
+    private Integer code;
 
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 
