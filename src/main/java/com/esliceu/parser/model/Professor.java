@@ -1,11 +1,20 @@
 package com.esliceu.parser.model;
 
+import com.sun.javafx.beans.IDProperty;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Professor {
 
+    @Id
     private String code;
     private String name;
     private String firstSurname;
     private String secondSurname;
+
+    public Professor() {}
 
     public String getCodi() {
         return code;

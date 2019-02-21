@@ -1,12 +1,29 @@
 package com.esliceu.parser.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Student {
 
+    @Id
     private String code;
     private String name;
     private String firstSurname;
     private String secondSurname;
-    private String groupCode;
+    @ManyToOne
+    @JoinColumn(name = "groupCode")
+    private Group group;
+
+    public Student() {}
+
+    public Student(String name, String code) {
+        this.name = name ;
+        this.code = code;
+    }
+
 
     public String getCode() {
         return code;
@@ -40,12 +57,12 @@ public class Student {
         this.secondSurname = secondSurname;
     }
 
-    public String getGroupCode() {
-        return groupCode;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGroupCode(String groupCode) {
-        this.groupCode = groupCode;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }
 

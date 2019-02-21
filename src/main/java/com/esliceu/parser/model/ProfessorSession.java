@@ -1,28 +1,24 @@
 package com.esliceu.parser.model;
 
+import javax.persistence.*;
+
+@Entity
 public class ProfessorSession {
 
-    private String professorCode;
-    private String groupCode;
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "professorCode")
+    private Professor professor;
+    @ManyToOne
+    @JoinColumn(name = "groupCode")
+    private Group group;
     private int day;
     private String hour;
 
 
-    public String getProfessorCode() {
-        return professorCode;
-    }
-
-    public void setProfessorCode(String professorCode) {
-        this.professorCode = professorCode;
-    }
-
-    public String getGroupCode() {
-        return groupCode;
-    }
-
-    public void setGroupCode(String groupCode) {
-        this.groupCode = groupCode;
-    }
+    public ProfessorSession() {}
 
     public int getDay() {
         return day;
@@ -40,4 +36,19 @@ public class ProfessorSession {
         this.hour = hour;
     }
 
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }

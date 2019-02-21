@@ -1,19 +1,20 @@
 package com.esliceu.parser.model;
 
+import javax.persistence.*;
+
+@Entity
 public class StudentSession {
 
-    private String StudentCode;
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "studentCode")
+    private Student student;
     private int day;
     private String hour;
 
-
-    public String getStudentCode() {
-        return StudentCode;
-    }
-
-    public void setStudentCode(String studentCode) {
-        StudentCode = studentCode;
-    }
+    public StudentSession() {}
 
     public int getDay() {
         return day;
