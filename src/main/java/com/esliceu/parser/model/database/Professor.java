@@ -1,9 +1,13 @@
-package com.esliceu.parser.model;
+package com.esliceu.parser.model.database;
 
-import javax.persistence.*;
+import com.sun.javafx.beans.IDProperty;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
-public class Student {
+public class Professor {
 
     @Id
     @Column(length = 50)
@@ -11,31 +15,22 @@ public class Student {
     private String name;
     private String firstSurname;
     private String secondSurname;
-    @ManyToOne
-    @JoinColumn(name = "groupCode")
-    private Group group;
 
-    public Student() {}
+    public Professor() {}
 
-    public Student(String name, String code) {
-        this.name = name ;
-        this.code = code;
-    }
-
-
-    public String getCode() {
+    public String getCodi() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCodi(String code) {
         this.code = code;
     }
 
-    public String getName() {
+    public String getNom() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setNom(String name) {
         this.name = name;
     }
 
@@ -55,12 +50,5 @@ public class Student {
         this.secondSurname = secondSurname;
     }
 
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
 }
 

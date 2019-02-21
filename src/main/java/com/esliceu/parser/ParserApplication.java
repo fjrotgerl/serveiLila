@@ -1,7 +1,7 @@
 package com.esliceu.parser;
 
-import com.esliceu.parser.model.Group;
-import com.esliceu.parser.model.Student;
+import com.esliceu.parser.model.database.Group;
+import com.esliceu.parser.model.database.Student;
 import com.esliceu.parser.repository.GroupRepository;
 import com.esliceu.parser.repository.StudentRepository;
 import org.springframework.boot.CommandLineRunner;

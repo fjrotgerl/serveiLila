@@ -1,4 +1,4 @@
-package com.esliceu.parser.model;
+package com.esliceu.parser.model.database;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

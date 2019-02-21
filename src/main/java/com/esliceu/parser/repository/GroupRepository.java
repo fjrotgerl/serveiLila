@@ -1,6 +1,6 @@
 package com.esliceu.parser.repository;
 
-import com.esliceu.parser.model.Group;
+import com.esliceu.parser.model.database.Group;
 
 import org.springframework.data.repository.CrudRepository;
 
