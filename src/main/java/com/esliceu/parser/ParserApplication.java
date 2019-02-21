@@ -2,6 +2,7 @@ package com.esliceu.parser;
 
 import com.esliceu.parser.model.database.Group;
 import com.esliceu.parser.model.database.Student;
+
 import com.esliceu.parser.repository.GroupRepository;
 import com.esliceu.parser.repository.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -10,6 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
 
 @SpringBootApplication
 public class ParserApplication {
@@ -26,7 +31,9 @@ public class ParserApplication {
 
     @Bean
     public CommandLineRunner demo(StudentRepository stRepository, GroupRepository grRepository, ApplicationContext app) {
+
         return (args) -> {
+
             // save a couple of customer
             Student student = app.getBean(Student.class);
             student.setName("pollo");
@@ -49,8 +56,21 @@ public class ParserApplication {
             for (Student st : stRepository.findAll()) {
                 System.out.println(st.getName());
 
+
+
             }
+            /*
+            File file = new File("src/main/resources/exportacioDadesCentre.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(Center.class);
+
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            Center a =  (Center) jaxbUnmarshaller.unmarshal(file);
+
+            System.out.println(a);
+            */
+
         };
+
     }
 
 }

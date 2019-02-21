@@ -63,4 +63,3 @@ public class Student {
         this.group = group;
     }
 }
-
