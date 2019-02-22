@@ -53,7 +53,13 @@ public class Center {
         this.alumnes = alumnes;
     }
 
+    public List<Courses> getCourses() {
+        return courses;
+    }
 
+    public void setCourses(List<Courses> courses) {
+        this.courses = courses;
+    }
 
 
     //HORARIA

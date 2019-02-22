@@ -1,20 +1,15 @@
 package com.esliceu.parser;
 
-import com.esliceu.parser.model.database.Group;
-import com.esliceu.parser.model.database.Student;
-
+import com.esliceu.parser.component.ParseProcessor;
 import com.esliceu.parser.repository.GroupRepository;
 import com.esliceu.parser.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
 
 @SpringBootApplication
 public class ParserApplication {
@@ -23,17 +18,21 @@ public class ParserApplication {
         SpringApplication.run(ParserApplication.class, args);
     }
 
-    @Bean
-    @Scope("prototype")
-    public Student student() {
-        return new Student();
-    }
+
+    @Autowired
+    ParseProcessor b;
+
+
 
     @Bean
     public CommandLineRunner demo(StudentRepository stRepository, GroupRepository grRepository, ApplicationContext app) {
 
         return (args) -> {
 
+
+
+            b.init();
+/*
             // save a couple of customer
             Student student = app.getBean(Student.class);
             student.setName("pollo");
@@ -59,7 +58,8 @@ public class ParserApplication {
 
 
             }
-            /*
+            */
+/*
             File file = new File("src/main/resources/exportacioDadesCentre.xml");
             JAXBContext jaxbContext = JAXBContext.newInstance(Center.class);
 
@@ -68,6 +68,7 @@ public class ParserApplication {
 
             System.out.println(a);
             */
+
 
         };
 
