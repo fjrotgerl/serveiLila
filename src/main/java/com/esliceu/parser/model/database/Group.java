@@ -8,14 +8,10 @@ import javax.persistence.Table;
 @Table(name = "grupo")
 public class Group {
 
-    public Group() {}
-
-    public Group(Integer code){
-        this.code = code;
-    }
-
     @Id
     private Integer code;
+
+    public Group() {}
 
     public Integer getCode() {
         return code;

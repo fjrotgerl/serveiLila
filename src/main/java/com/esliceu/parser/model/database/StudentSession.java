@@ -8,8 +8,10 @@ public class StudentSession {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+
     @ManyToOne
     private Student student;
+
     private int day;
     private String hour;
 

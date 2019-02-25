@@ -44,6 +44,8 @@ public class ParseProcessor {
     @Autowired
     private SessionStudentRepository sessionStudentRepository;
 
+    private Long incrementalID = 0L;
+
     public Xmlparse getParser() {
         return parser;
     }
@@ -68,6 +70,9 @@ public class ParseProcessor {
                 }
             }
         }
+
+        System.out.println("Grupos añadidos");
+
         //Sacar todos los estudiantes y  guardarlos en la base de datos
 
         for (int i = 0; i < data.getAlumnes().size(); i++) {
@@ -85,6 +90,8 @@ public class ParseProcessor {
             }
         }
 
+        System.out.println("Estudiantes añadidos");
+
         //Sacar todos los professores y  guardarlos en la base de datos
         for (int i = 0; i < data.getProfessors().size(); i++) {
             for (int j = 0; j < data.getProfessors().get(i).getTeacher().size(); j++) {
@@ -96,22 +103,29 @@ public class ParseProcessor {
             }
         }
 
+        System.out.println("Profes añadidos");
+
         //Sacar todos las sessiones de professores y  guardarlos en la base de datos
+
 
         for (int i = 0; i < data.getScheduleTeachers().size(); i++) {
             for (int j = 0; j < data.getScheduleTeachers().get(i).getTeachersSessions().size(); j++) {
                 /*Aunque el id sea autogenerado si no le hacemos un set de algo se vuelve loco y nos hace
                 todos con la misma ID y de esa forma
                  sobreescribe la misma sesion en la base de datos.*/
-                professorSession.setId((long) 1);
+                professorSession.setId(incrementalID);
+                incrementalID ++;
                 professorSession.setDay(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getDay());
                 professorSession.setHour(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getHour());
-                professorSession.setGroup(groupRepository.findById(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getGroupCode()).get());
-                professorSession.setProfessor(professorRepository.findById(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getProfessorCode()).get());
-
+                professorSession.setGroup(groupRepository.findById(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getGroupCode()).orElse(null) );
+                professorSession.setProfessor(professorRepository.findById(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getProfessorCode()).orElse(null) );
+                sessionProfessorRepository.save(professorSession);
 
             }
         }
+        incrementalID = 0L;
+
+        System.out.println("Sessiones de profe añadidos");
 
         //Sacar todos las sessiones de estudiantes y  guardarlos en la base de datos
 
@@ -120,12 +134,15 @@ public class ParseProcessor {
                 /*Aunque el id sea autogenerado si no le hacemos un set de algo se vuelve loco y nos hace
                 todos con la misma ID y de esa forma
                  sobreescribe la misma sesion en la base de datos.*/
-                studentSession.setId((long) 1);
+                studentSession.setId(incrementalID);
+                incrementalID ++;
                 studentSession.setDay(data.getScheduleStudents().get(i).getStudentSessions().get(j).getDay());
                 studentSession.setHour(data.getScheduleStudents().get(i).getStudentSessions().get(j).getHour());
-                studentSession.setStudent(studentRepository.findById(data.getScheduleStudents().get(i).getStudentSessions().get(j).getStudentCode()).get());
+                studentSession.setStudent(studentRepository.findById(data.getScheduleStudents().get(i).getStudentSessions().get(j).getStudentCode()).orElse(null) );
                 sessionStudentRepository.save(studentSession);
             }
         }
+
+        System.out.println("Sessiones de alumno añadidos");
     }
 }

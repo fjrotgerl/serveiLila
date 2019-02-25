@@ -8,19 +8,16 @@ public class Student {
     @Id
     @Column(length = 50)
     private String code;
+
     private String name;
     private String firstSurname;
     private String secondSurname;
+
     @ManyToOne
     @JoinColumn(name = "groupCode")
     private Group group;
 
     public Student() {}
-
-    public Student(String name, String code) {
-        this.name = name ;
-        this.code = code;
-    }
 
 
     public String getCode() {

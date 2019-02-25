@@ -1,7 +1,5 @@
 package com.esliceu.parser.model.database;
 
-import com.sun.javafx.beans.IDProperty;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,6 +10,7 @@ public class Professor {
     @Id
     @Column(length = 50)
     private String code;
+
     private String name;
     private String firstSurname;
     private String secondSurname;

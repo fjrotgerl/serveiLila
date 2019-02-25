@@ -1,13 +1,10 @@
 package com.esliceu.parser;
 
 import com.esliceu.parser.component.ParseProcessor;
-import com.esliceu.parser.repository.GroupRepository;
-import com.esliceu.parser.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 
@@ -18,60 +15,13 @@ public class ParserApplication {
         SpringApplication.run(ParserApplication.class, args);
     }
 
-
     @Autowired
-    ParseProcessor b;
-
-
+    ParseProcessor parseProcessor;
 
     @Bean
-    public CommandLineRunner demo(StudentRepository stRepository, GroupRepository grRepository, ApplicationContext app) {
-
+    public CommandLineRunner demo() {
         return (args) -> {
-
-
-
-            b.init();
-/*
-            // save a couple of customer
-            Student student = app.getBean(Student.class);
-            student.setName("pollo");
-            student.setCode("55");
-
-            Group grup=  new Group(12563);
-            grRepository.save(grup);
-            student.setGroup(grup);
-            stRepository.save(student);
-
-            stRepository.save(new Student("Jack","1"));
-            stRepository.save(new Student("Chloe","2"));
-            stRepository.save(new Student("Kim","3"));
-            stRepository.save(new Student("David","4"));
-            stRepository.save(new Student("Michelle","5"));
-
-            // fetch all customers
-            System.out.println("Customers found with findAll():");
-            System.out.println("-------------------------------");
-            for (Student st : stRepository.findAll()) {
-                System.out.println(st.getName());
-
-
-
-            }
-            */
-/*
-            File file = new File("src/main/resources/exportacioDadesCentre.xml");
-            JAXBContext jaxbContext = JAXBContext.newInstance(Center.class);
-
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            Center a =  (Center) jaxbUnmarshaller.unmarshal(file);
-
-            System.out.println(a);
-            */
-
-
+            parseProcessor.init();
         };
-
     }
-
 }

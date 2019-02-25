@@ -8,12 +8,15 @@ public class ProfessorSession {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "professorCode")
     private Professor professor;
+
     @ManyToOne
     @JoinColumn(name = "groupCode")
     private Group group;
+
     private int day;
     private String hour;
 
