@@ -12,7 +12,7 @@ public class TeachersSession {
     @XmlAttribute(name="professor")
     private String professorCode;
     @XmlAttribute(name="grup")
-    private String groupCode;
+    private Integer groupCode;
     @XmlAttribute(name="dia")
     private int day;
     @XmlAttribute(name="hora")
@@ -27,11 +27,11 @@ public class TeachersSession {
         this.professorCode = professorCode;
     }
 
-    public String getGroupCode() {
+    public Integer getGroupCode() {
         return groupCode;
     }
 
-    public void setGroupCode(String groupCode) {
+    public void setGroupCode(Integer groupCode) {
         this.groupCode = groupCode;
     }
 

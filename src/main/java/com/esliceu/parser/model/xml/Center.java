@@ -61,6 +61,14 @@ public class Center {
         this.courses = courses;
     }
 
+    public List<Teachers> getProfessors() {
+        return professors;
+    }
+
+    public void setProfessors(List<Teachers> professors) {
+        this.professors = professors;
+    }
+
 
     //HORARIA
 }

@@ -1,13 +1,10 @@
 package com.esliceu.parser.repository;
 
-import com.esliceu.parser.model.database.Group;
-
+import com.esliceu.parser.model.database.Professor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface GroupRepository extends CrudRepository<Group, Integer> {
+public interface ProfessorRepository extends CrudRepository<Professor, String> {
 
 }

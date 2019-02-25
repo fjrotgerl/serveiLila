@@ -31,4 +31,5 @@ public class Group {
     public void setCode(Integer code) {
         this.code = code;
     }
+
 }

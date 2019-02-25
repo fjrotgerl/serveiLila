@@ -18,7 +18,7 @@ public class Student {
     @XmlAttribute(name="ap2")
     private String secondSurname;
     @XmlAttribute(name="grup")
-    private String groupCode;
+    private Integer groupCode;
 
     public String getCode() {
         return code;
@@ -52,11 +52,11 @@ public class Student {
         this.secondSurname = secondSurname;
     }
 
-    public String getGroupCode() {
+    public Integer getGroupCode() {
         return groupCode;
     }
 
-    public void setGroupCode(String groupCode) {
+    public void setGroupCode(Integer groupCode) {
         this.groupCode = groupCode;
     }
 }
