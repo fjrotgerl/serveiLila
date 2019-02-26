@@ -55,10 +55,8 @@ public class ParseProcessor {
     }
 
     public void init() throws JAXBException {
-        // save a couple of customer
 
-
-        //Prueba de funcionamiento
+        //Recogemos el objeto que contiene los datos a guaradar
         Center data = parser.getData();
 
         //Sacar todos los grupos y  guardarlos en la base de datos
@@ -82,6 +80,7 @@ public class ParseProcessor {
                 student.setName(data.getAlumnes().get(i).getAlumnes().get(j).getName());
                 student.setFirstSurname(data.getAlumnes().get(i).getAlumnes().get(j).getFirstSurname());
                 student.setSecondSurname(data.getAlumnes().get(i).getAlumnes().get(j).getSecondSurname());
+
                 //Recupera el grupo ya creado anteriormente que tenga el mismo numero que el grupo del usuario
                 Group auxGroup = groupRepository.findById(data.getAlumnes().get(i).getAlumnes().get(j).getGroupCode()).get();
                 student.setGroup(auxGroup);
@@ -110,9 +109,6 @@ public class ParseProcessor {
 
         for (int i = 0; i < data.getScheduleTeachers().size(); i++) {
             for (int j = 0; j < data.getScheduleTeachers().get(i).getTeachersSessions().size(); j++) {
-                /*Aunque el id sea autogenerado si no le hacemos un set de algo se vuelve loco y nos hace
-                todos con la misma ID y de esa forma
-                 sobreescribe la misma sesion en la base de datos.*/
                 professorSession.setId(incrementalID);
                 incrementalID ++;
                 professorSession.setDay(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getDay());
@@ -131,9 +127,6 @@ public class ParseProcessor {
 
         for (int i = 0; i < data.getScheduleStudents().size(); i++) {
             for (int j = 0; j < data.getScheduleStudents().get(i).getStudentSessions().size(); j++) {
-                /*Aunque el id sea autogenerado si no le hacemos un set de algo se vuelve loco y nos hace
-                todos con la misma ID y de esa forma
-                 sobreescribe la misma sesion en la base de datos.*/
                 studentSession.setId(incrementalID);
                 incrementalID ++;
                 studentSession.setDay(data.getScheduleStudents().get(i).getStudentSessions().get(j).getDay());
