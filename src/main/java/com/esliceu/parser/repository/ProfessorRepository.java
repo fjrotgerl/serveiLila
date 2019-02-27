@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProfessorRepository extends CrudRepository<Professor, String> {
+    Professor findByCode(String code);
 
+    Iterable<Professor> findAll();
 }
