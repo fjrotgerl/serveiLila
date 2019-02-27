@@ -1,6 +1,7 @@
 package com.esliceu.parser.model.database;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 @Table(name = "grupo")
@@ -25,4 +26,6 @@ public class Group {
 
     public void setTutor(Professor tutor) {this.tutor = tutor;}
 
+    public void setTutor(Optional<Professor> byId) {
+    }
 }
