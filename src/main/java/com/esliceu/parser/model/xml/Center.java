@@ -25,6 +25,8 @@ public class Center {
     @XmlElement(name="CURSOS")
     private List<Courses> courses;
 
+    @XmlElement(name="AULES")
+    private List<Classrooms> classrooms;
 
     public List<ScheduleTeachers> getScheduleTeachers() {
         return scheduleTeachers;
@@ -67,6 +69,13 @@ public class Center {
         this.professors = professors;
     }
 
+    public List<Classrooms> getClassrooms() {
+        return classrooms;
+    }
 
-    //HORARIA
+    public void setClassrooms(List<Classrooms> classrooms) {
+        this.classrooms = classrooms;
+    }
+
+
 }
