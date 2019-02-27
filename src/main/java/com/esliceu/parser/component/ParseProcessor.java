@@ -21,15 +21,6 @@ public class ParseProcessor {
     private Xmlparse parser;
 
     @Autowired
-    private StudentSession studentSession;
-
-    @Autowired
-    private Group group;
-
-    @Autowired
-    private Aula aula;
-
-    @Autowired
     private GroupRepository groupRepository;
 
     @Autowired
@@ -47,8 +38,6 @@ public class ParseProcessor {
     @Autowired
     private AulaRepository aulaRepository;
 
-
-    private Long incrementalID = 0L;
 
     public Xmlparse getParser() {
         return parser;
@@ -150,17 +139,21 @@ public class ParseProcessor {
 
         System.out.println("Sessiones de profe añadidos");
 
+
         //Sacar todos las sessiones de estudiantes y  guardarlos en la base de datos
 
-        for (int i = 0; i < data.getScheduleStudents().size(); i++) {
-            for (int j = 0; j < data.getScheduleStudents().get(i).getStudentSessions().size(); j++) {
-                studentSession.setId(incrementalID);
-                incrementalID++;
-                studentSession.setDay(data.getScheduleStudents().get(i).getStudentSessions().get(j).getDay());
-                studentSession.setHour(data.getScheduleStudents().get(i).getStudentSessions().get(j).getHour());
-                studentSession.setStudent(studentRepository.findById(data.getScheduleStudents().get(i).getStudentSessions().get(j).getStudentCode()).orElse(null));
+        for(ScheduleStudents scheduleStudents : data.getScheduleStudents()){
+            for(com.esliceu.parser.model.xml.StudentSession studentSession : scheduleStudents.getStudentSessions()){
 
-                sessionStudentRepository.save(studentSession);
+                StudentSession studentSessionDB = new StudentSession();
+                studentSessionDB.setDay(studentSession.getDay());
+                studentSessionDB.setHour(studentSession.getHour());
+
+                Optional<Student> student = studentRepository.findById(studentSession.getStudentCode());
+                student.ifPresent(studentSessionDB::setStudent);
+
+                sessionStudentRepository.save(studentSessionDB);
+
             }
         }
 
