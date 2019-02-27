@@ -26,8 +26,6 @@ public class Center {
     private List<Courses> courses;
 
 
-
-
     public List<ScheduleTeachers> getScheduleTeachers() {
         return scheduleTeachers;
     }

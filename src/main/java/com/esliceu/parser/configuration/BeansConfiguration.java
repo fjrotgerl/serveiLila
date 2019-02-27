@@ -40,6 +40,11 @@ public class BeansConfiguration {
         return new StudentSession();
     }
 
+    @Bean
+    @Scope("prototype")
+    public Aula aula(){ return new Aula();}
+
+
     @Value("${files.xml.classpath}")
     private String patch;
 

@@ -30,6 +30,9 @@ public class ParseProcessor {
     private Group group;
 
     @Autowired
+    private Aula aula;
+
+    @Autowired
     private GroupRepository groupRepository;
 
     @Autowired
@@ -43,6 +46,10 @@ public class ParseProcessor {
 
     @Autowired
     private SessionStudentRepository sessionStudentRepository;
+
+    @Autowired
+    private AulaRepository aulaRepository;
+
 
     private Long incrementalID = 0L;
 
@@ -138,5 +145,9 @@ public class ParseProcessor {
         }
 
         System.out.println("Sessiones de alumno añadidos");
+
+
+        //Sacar todas las aulas del centro y guardarlas en la base de datos
+
     }
 }
