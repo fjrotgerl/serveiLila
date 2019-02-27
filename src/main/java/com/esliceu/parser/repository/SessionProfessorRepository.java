@@ -1,14 +1,15 @@
 package com.esliceu.parser.repository;
 
 import com.esliceu.parser.model.database.ProfessorSession;
-import com.esliceu.parser.model.xml.TeachersSession;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface SessionProfessorRepository extends CrudRepository<ProfessorSession, Long> {
 
-    ProfessorSession findOne(String teacherCode);
+    Optional<ProfessorSession> findById(Long professorId);
 
     Iterable<ProfessorSession> findAll();
 
