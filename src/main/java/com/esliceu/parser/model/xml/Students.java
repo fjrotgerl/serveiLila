@@ -8,6 +8,7 @@ import java.util.List;
 @XmlSeeAlso({Student.class})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Students {
+
     @XmlElement(name="ALUMNE")
     private List<Student> alumnes;
 

@@ -169,16 +169,21 @@ public class ParseProcessor {
 
         //Sacar todas las aulas del centro y guardarlas en la base de datos
 
-        /*for (int i = 0; i< data.getClassrooms().size(); i++){
-            for (int j = 0; j< data.getClassrooms().get(i).getClassrooms().size(); j++){
+        for (Classrooms classrooms : data.getClassrooms()) {
+            for (Classroom classroom : classrooms.getClassrooms()) {
 
-                aula.setCode(data.getClassrooms().get(i).getClassrooms().get(j).getCodi());
-                aula.setDescription(data.getClassrooms().get(i).getClassrooms().get(j).getDescripcio());
+                Aula aula = new Aula();
+                aula.setCode(classroom.getCodi());
+                aula.setDescription(classroom.getDescripcio());
+                System.out.println(classroom.getDescripcio());
+
                 aulaRepository.save(aula);
+
             }
+
         }
 
-        System.out.println("Aulas añadidas");*/
+        System.out.println("Aulas añadidas");
 
 
 

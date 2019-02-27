@@ -2,7 +2,6 @@ package com.esliceu.parser.model.xml;
 
 
 import javax.xml.bind.annotation.*;
-import java.util.List;
 
 
 @XmlRootElement(name = "AULA")

@@ -7,6 +7,7 @@ import java.util.List;
 @XmlSeeAlso({Group.class})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Course {
+
     @XmlElement(name="GRUP")
     private List<Group> Groups;
 
