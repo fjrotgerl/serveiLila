@@ -9,8 +9,4 @@ import java.util.Optional;
 @Repository
 public interface SessionProfessorRepository extends CrudRepository<ProfessorSession, Long> {
 
-    Optional<ProfessorSession> findById(Long professorId);
-
-    Iterable<ProfessorSession> findAll();
-
 }

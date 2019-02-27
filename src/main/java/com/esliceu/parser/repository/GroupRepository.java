@@ -8,7 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GroupRepository extends CrudRepository<Group, Integer> {
 
-    Group findByCode(Integer code);
-
-    Iterable<Group> findAll();
 }

@@ -5,7 +5,4 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface AulaRepository  extends CrudRepository <Aula,Integer> {
 
-    Aula findByCode(Integer code);
-
-    Iterable<Aula> findAll();
 }
