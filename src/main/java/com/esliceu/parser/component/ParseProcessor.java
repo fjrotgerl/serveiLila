@@ -56,7 +56,7 @@ public class ParseProcessor {
 
     public void init() throws JAXBException {
 
-        //Recogemos el objeto que contiene los datos a guaradar
+        //Recogemos el objeto que contiene los datos a guardar
         Center data = parser.getData();
 
         //Sacar todos los grupos y  guardarlos en la base de datos
@@ -64,6 +64,7 @@ public class ParseProcessor {
             for (int j = 0; j < data.getCourses().get(i).getStudentSessions().size(); j++) {
                 for (int k = 0; k < data.getCourses().get(i).getStudentSessions().get(j).getGroups().size(); k++) {
                     group.setCode(data.getCourses().get(i).getStudentSessions().get(j).getGroups().get(k).getCode());
+                    group.setTutor(professorRepository.findById(data.getCourses().get(i).getStudentSessions().get(j).getGroups().get(k).getTutor));
                     groupRepository.save(group);
                 }
             }
