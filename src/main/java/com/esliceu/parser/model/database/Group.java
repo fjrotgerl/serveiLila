@@ -10,8 +10,6 @@ public class Group {
     @Id
     private Integer code;
 
-    @OneToOne(mappedBy = "group")
-    private Professor tutor;
 
     public Group() {}
 
@@ -23,10 +21,6 @@ public class Group {
         this.code = code;
     }
 
-    public Professor getTutor() {return tutor;}
 
-    public void setTutor(Professor tutor) {this.tutor = tutor;}
 
-    public void setTutor(Optional<Professor> byId) {
-    }
 }

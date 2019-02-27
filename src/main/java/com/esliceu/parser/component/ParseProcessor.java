@@ -1,27 +1,24 @@
 package com.esliceu.parser.component;
 
 import com.esliceu.parser.model.database.*;
-import com.esliceu.parser.model.xml.Center;
+import com.esliceu.parser.model.database.Group;
+import com.esliceu.parser.model.database.Student;
+import com.esliceu.parser.model.database.StudentSession;
+import com.esliceu.parser.model.xml.*;
 import com.esliceu.parser.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class ParseProcessor {
 
     @Autowired
     private Xmlparse parser;
-
-    @Autowired
-    private Student student;
-
-    @Autowired
-    private Professor professor;
-
-    @Autowired
-    private ProfessorSession professorSession;
 
     @Autowired
     private StudentSession studentSession;
@@ -66,23 +63,52 @@ public class ParseProcessor {
         //Recogemos el objeto que contiene los datos a guardar
         Center data = parser.getData();
 
-        //Sacar todos los grupos y  guardarlos en la base de datos
-        for (int i = 0; i < data.getCourses().size(); i++) {
-            for (int j = 0; j < data.getCourses().get(i).getStudentSessions().size(); j++) {
-                for (int k = 0; k < data.getCourses().get(i).getStudentSessions().get(j).getGroups().size(); k++) {
-                    group.setCode(data.getCourses().get(i).getStudentSessions().get(j).getGroups().get(k).getCode());
-                    group.setTutor(professorRepository.findById(data.getCourses().get(i).getStudentSessions().get(j).getGroups().get(k).getTutor()));
-                    groupRepository.save(group);
+        Map<String,Group> groupsTutor = new HashMap<>();
+
+        for (Courses courses : data.getCourses()) {
+            for (Course studentSessions : courses.getStudentSessions()) {
+                for (com.esliceu.parser.model.xml.Group group : studentSessions.getGroups()) {
+
+                    Group groupDb = new Group();
+                    groupDb.setCode(group.getCode());
+                    groupDb = groupRepository.save(groupDb);
+
+                    groupsTutor.put(group.getTutor(),groupDb);
+
                 }
             }
         }
 
+
         System.out.println("Grupos añadidos");
+
+        //Sacar todos los professores y  guardarlos en la base de datos
+
+        for (Teachers teachers : data.getProfessors()) {
+            for (Teacher teacher : teachers.getTeacher()) {
+
+                Professor professor = new Professor();
+                professor.setCodi(teacher.getCode());
+                professor.setNom(teacher.getName());
+                professor.setFirstSurname(teacher.getFirstSurname());
+                professor.setSecondSurname(teacher.getFirstSurname());
+                professor.setGroup(groupsTutor.get(teacher.getCode()));
+
+                professorRepository.save(professor);
+
+            }
+
+        }
+
+        System.out.println("Profes añadidos");
+
 
         //Sacar todos los estudiantes y  guardarlos en la base de datos
 
         for (int i = 0; i < data.getAlumnes().size(); i++) {
             for (int j = 0; j < data.getAlumnes().get(i).getAlumnes().size(); j++) {
+
+                Student student = new Student();
 
                 student.setCode(data.getAlumnes().get(i).getAlumnes().get(j).getCode());
                 student.setName(data.getAlumnes().get(i).getAlumnes().get(j).getName());
@@ -99,35 +125,28 @@ public class ParseProcessor {
 
         System.out.println("Estudiantes añadidos");
 
-        //Sacar todos los professores y  guardarlos en la base de datos
-        for (int i = 0; i < data.getProfessors().size(); i++) {
-            for (int j = 0; j < data.getProfessors().get(i).getTeacher().size(); j++) {
-                professor.setCodi(data.getProfessors().get(i).getTeacher().get(j).getCode());
-                professor.setNom(data.getProfessors().get(i).getTeacher().get(j).getName());
-                professor.setFirstSurname(data.getProfessors().get(i).getTeacher().get(j).getFirstSurname());
-                professor.setSecondSurname(data.getProfessors().get(i).getTeacher().get(j).getFirstSurname());
-                professorRepository.save(professor);
-            }
-        }
-
-        System.out.println("Profes añadidos");
 
         //Sacar todos las sessiones de professores y  guardarlos en la base de datos
 
+        for (ScheduleTeachers scheduleTeachers : data.getScheduleTeachers()){
+            for (TeachersSession teachersSession: scheduleTeachers.getTeachersSessions()){
 
-        for (int i = 0; i < data.getScheduleTeachers().size(); i++) {
-            for (int j = 0; j < data.getScheduleTeachers().get(i).getTeachersSessions().size(); j++) {
-                professorSession.setId(incrementalID);
-                incrementalID ++;
-                professorSession.setDay(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getDay());
-                professorSession.setHour(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getHour());
-                professorSession.setGroup(groupRepository.findById(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getGroupCode()).orElse(null) );
-                professorSession.setProfessor(professorRepository.findById(data.getScheduleTeachers().get(i).getTeachersSessions().get(j).getProfessorCode()).orElse(null) );
+                ProfessorSession professorSession = new ProfessorSession();
+                professorSession.setDay(teachersSession.getDay());
+                professorSession.setHour(teachersSession.getHour());
+
+                Optional<Group> group = groupRepository.findById(teachersSession.getGroupCode());
+
+                group.ifPresent(professorSession::setGroup);
+
+                Optional<Professor> professor = professorRepository.findById(teachersSession.getProfessorCode());
+                professor.ifPresent(professorSession::setProfessor);
+
                 sessionProfessorRepository.save(professorSession);
-
             }
+
         }
-        incrementalID = 0L;
+
 
         System.out.println("Sessiones de profe añadidos");
 
@@ -136,10 +155,11 @@ public class ParseProcessor {
         for (int i = 0; i < data.getScheduleStudents().size(); i++) {
             for (int j = 0; j < data.getScheduleStudents().get(i).getStudentSessions().size(); j++) {
                 studentSession.setId(incrementalID);
-                incrementalID ++;
+                incrementalID++;
                 studentSession.setDay(data.getScheduleStudents().get(i).getStudentSessions().get(j).getDay());
                 studentSession.setHour(data.getScheduleStudents().get(i).getStudentSessions().get(j).getHour());
-                studentSession.setStudent(studentRepository.findById(data.getScheduleStudents().get(i).getStudentSessions().get(j).getStudentCode()).orElse(null) );
+                studentSession.setStudent(studentRepository.findById(data.getScheduleStudents().get(i).getStudentSessions().get(j).getStudentCode()).orElse(null));
+
                 sessionStudentRepository.save(studentSession);
             }
         }
@@ -149,7 +169,7 @@ public class ParseProcessor {
 
         //Sacar todas las aulas del centro y guardarlas en la base de datos
 
-        for (int i = 0; i< data.getClassrooms().size(); i++){
+        /*for (int i = 0; i< data.getClassrooms().size(); i++){
             for (int j = 0; j< data.getClassrooms().get(i).getClassrooms().size(); j++){
 
                 aula.setCode(data.getClassrooms().get(i).getClassrooms().get(j).getCodi());
@@ -158,7 +178,9 @@ public class ParseProcessor {
             }
         }
 
-        System.out.println("Aulas añadidas");
+        System.out.println("Aulas añadidas");*/
+
+
 
     }
 }
