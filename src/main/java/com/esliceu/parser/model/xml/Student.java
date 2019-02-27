@@ -7,16 +7,18 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Student {
 
-
-
     @XmlAttribute(name="codi")
     private String code;
+
     @XmlAttribute(name="nom")
     private String name;
+
     @XmlAttribute(name="ap1")
     private String firstSurname;
+
     @XmlAttribute(name="ap2")
     private String secondSurname;
+
     @XmlAttribute(name="grup")
     private Integer groupCode;
 

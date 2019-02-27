@@ -16,6 +16,9 @@ public class Group {
     @XmlAttribute(name="nom")
     private String name;
 
+    @XmlAttribute(name="tutor")
+    private String tutor;
+
     public String getName() {
         return name;
     }
@@ -32,4 +35,11 @@ public class Group {
         this.code = code;
     }
 
+    public String getTutor() {
+        return tutor;
+    }
+
+    public void setTutor(String tutor) {
+        this.tutor = tutor;
+    }
 }
