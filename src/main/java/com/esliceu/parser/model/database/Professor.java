@@ -3,6 +3,7 @@ package com.esliceu.parser.model.database;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Professor {
@@ -14,6 +15,9 @@ public class Professor {
     private String name;
     private String firstSurname;
     private String secondSurname;
+
+    @OneToOne
+    private Group group;
 
     public Professor() {}
 
@@ -49,4 +53,11 @@ public class Professor {
         this.secondSurname = secondSurname;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }

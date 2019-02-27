@@ -10,6 +10,7 @@ public class Group {
     @Id
     private Integer code;
 
+    @OneToOne(mappedBy = "group")
     private Professor tutor;
 
     public Group() {}
