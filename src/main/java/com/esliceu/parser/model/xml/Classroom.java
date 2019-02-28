@@ -9,10 +9,10 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Classroom {
 
-    @XmlElement(name="codi")
+    @XmlAttribute(name="codi")
     private Integer codi;
 
-    @XmlElement(name="descripcio")
+    @XmlAttribute(name="descripcio")
     private String descripcio;
 
     public Integer getCodi() {
