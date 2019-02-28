@@ -25,8 +25,12 @@ public class Center {
     @XmlElement(name="CURSOS")
     private List<Courses> courses;
 
+    @XmlElement(name = "SUBMATERIES")
+    private List<Subjects> subjects;
+
     @XmlElement(name="AULES")
     private List<Classrooms> classrooms;
+
 
     public List<ScheduleTeachers> getScheduleTeachers() {
         return scheduleTeachers;
@@ -77,5 +81,7 @@ public class Center {
         this.classrooms = classrooms;
     }
 
+    public List<Subjects> getSubjects() {return subjects;}
 
+    public void setSubjects(List<Subjects> subjects) {this.subjects = subjects;}
 }

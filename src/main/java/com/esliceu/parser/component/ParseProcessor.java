@@ -1,24 +1,28 @@
 package com.esliceu.parser.component;
 
-import com.esliceu.parser.model.database.*;
 import com.esliceu.parser.model.database.Course;
+import com.esliceu.parser.model.database.Group;
 import com.esliceu.parser.model.database.Student;
 import com.esliceu.parser.model.database.StudentSession;
+import com.esliceu.parser.model.database.*;
 import com.esliceu.parser.model.xml.*;
+import com.esliceu.parser.model.xml.Subject;
 import com.esliceu.parser.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class ParseProcessor {
 
     @Autowired
     private Xmlparse parser;
+
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -38,6 +42,9 @@ public class ParseProcessor {
     @Autowired
     private AulaRepository aulaRepository;
 
+    @Autowired
+    private SubjectRepository subjectRepository;
+
 
     public Xmlparse getParser() {
         return parser;
@@ -52,31 +59,55 @@ public class ParseProcessor {
         //Recogemos el objeto que contiene los datos a guardar
         Center data = parser.getData();
 
-        Map<String, Course> groupsTutor = new HashMap<>();
+        Map<String, Group> groupsTutor = new HashMap<>();
 
+
+        // Sacar los cursos, cada uno de los grupos que tienen esos cursos y meterlos en la base de datos
         for (Courses courses : data.getCourses()){
+
             for (com.esliceu.parser.model.xml.Course course : courses.getCourses()){
-                for (Group group : course.getGroups()){
 
-                    Course courseDb = new Course();
-                    courseDb.setCode(group.getCode());
-                    courseDb.setGroup(group.getName());
-                    courseDb.setName(course.getDescripcio());
-                    courseDb = groupRepository.save(courseDb);
+                Course courseDB = new Course();
+                courseDB.setCode(course.getCodi());
+                courseDB.setDescription(course.getDescripcio());
+                courseRepository.save(courseDB);
 
-                    groupsTutor.put(group.getTutor(), courseDb);
+                for (com.esliceu.parser.model.xml.Group group : course.getGroups()){
+
+                    Group groupDb = new Group();
+                    groupDb.setCode(group.getCode());
+                    groupDb.setName(group.getName());
+                    groupDb.setCourse(courseDB);
+                    groupDb = groupRepository.save(groupDb);
+                    groupsTutor.put(group.getTutor(), groupDb);
 
                 }
+
+            }
+
+            System.out.println("Grupos añadidos");
+        }
+
+        System.out.println("Cursos añadidos");
+
+        //Sacar todas las asignaturas y guardarlas en la base de datos
+
+        for (Subjects subjects : data.getSubjects()){
+            for (Subject subject : subjects.getSubjects()){
+                com.esliceu.parser.model.database.Subject subjectDB = new com.esliceu.parser.model.database.Subject();
+                subjectDB.setCode(subject.getCodi());
+                subjectDB.setDescription(subject.getDescripcio());
+                Optional<Course> course = courseRepository.findById(subject.getCurs());
+                course.ifPresent(subjectDB::setCourse);
+                subjectRepository.save(subjectDB);
+
+
             }
         }
 
-        System.out.println("Grupos añadidos");
+        System.out.println("Asignaturas añadidas");
 
-        for (Courses courses : data.getCourses()){
-            for (com.esliceu.parser.model.xml.Course course : courses.getCourses()){
 
-            }
-        }
 
         //Sacar todos los professores y  guardarlos en la base de datos
 
@@ -88,7 +119,7 @@ public class ParseProcessor {
                 professor.setNom(teacher.getName());
                 professor.setFirstSurname(teacher.getFirstSurname());
                 professor.setSecondSurname(teacher.getFirstSurname());
-                professor.setCourse(groupsTutor.get(teacher.getCode()));
+                professor.setGroup(groupsTutor.get(teacher.getCode()));
 
                 professorRepository.save(professor);
 
@@ -112,8 +143,8 @@ public class ParseProcessor {
                 student.setSecondSurname(data.getAlumnes().get(i).getStudents().get(j).getSecondSurname());
 
                 //Recupera el grupo ya creado anteriormente que tenga el mismo numero que el grupo del usuario
-                Course auxCourse = groupRepository.findById(data.getAlumnes().get(i).getStudents().get(j).getGroupCode()).get();
-                student.setCourse(auxCourse);
+                Group auxGroup = groupRepository.findById(data.getAlumnes().get(i).getStudents().get(j).getGroupCode()).get();
+                student.setGroup(auxGroup);
 
                 studentRepository.save(student);
             }
@@ -131,9 +162,9 @@ public class ParseProcessor {
                 professorSession.setDay(teachersSession.getDay());
                 professorSession.setHour(teachersSession.getHour());
 
-                Optional<Course> group = groupRepository.findById(teachersSession.getGroupCode());
+                Optional<Group> group = groupRepository.findById(teachersSession.getGroupCode());
 
-                group.ifPresent(professorSession::setCourse);
+                group.ifPresent(professorSession::setGroup);
 
                 Optional<Professor> professor = professorRepository.findById(teachersSession.getProfessorCode());
                 professor.ifPresent(professorSession::setProfessor);

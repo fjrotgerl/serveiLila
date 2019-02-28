@@ -9,13 +9,13 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Subject {
 
-    @XmlElement(name="codi")
+    @XmlAttribute(name="codi")
     private Integer codi;
 
-    @XmlElement(name="curs")
-    private String curs;
+    @XmlAttribute(name="curs")
+    private Integer curs;
 
-    @XmlElement(name = "descripcio")
+    @XmlAttribute(name = "descripcio")
     private String descripcio;
 
     public Integer getCodi() {
@@ -26,11 +26,11 @@ public class Subject {
         this.codi = codi;
     }
 
-    public String getCurs() {
+    public Integer getCurs() {
         return curs;
     }
 
-    public void setCurs(String curs) {
+    public void setCurs(Integer curs) {
         this.curs = curs;
     }
 

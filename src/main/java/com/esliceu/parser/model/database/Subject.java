@@ -1,20 +1,19 @@
 package com.esliceu.parser.model.database;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
+import javax.persistence.*;
 
 @Entity
-public class Course {
+public class Subject {
 
     @Id
     private Integer code;
 
     private String description;
 
-
-    public Course(){
-    }
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "course_code")
+    private Course course;
 
     public Integer getCode() {
         return code;
@@ -32,4 +31,11 @@ public class Course {
         this.description = description;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }

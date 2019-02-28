@@ -8,11 +8,23 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Course {
 
+    @XmlAttribute(name = "codi")
+    private Integer codi;
+
     @XmlAttribute(name = "descripcio")
     private String descripcio;
 
     @XmlElement(name="GRUP")
     private List<Group> Groups;
+
+
+    public Integer getCodi() {
+        return codi;
+    }
+
+    public void setCodi(Integer codi) {
+        this.codi = codi;
+    }
 
     public List<Group> getGroups() {
         return Groups;

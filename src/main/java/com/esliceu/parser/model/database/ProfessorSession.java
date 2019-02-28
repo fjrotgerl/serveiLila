@@ -10,12 +10,12 @@ public class ProfessorSession {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "professorCode")
+    @JoinColumn(name = "professor_code")
     private Professor professor;
 
     @ManyToOne
-    @JoinColumn(name = "groupCode")
-    private Course course;
+    @JoinColumn(name = "grupo_code")
+    private Group group;
 
     private int day;
     private String hour;
@@ -47,12 +47,12 @@ public class ProfessorSession {
         this.professor = professor;
     }
 
-    public Course getCourse() {
-        return course;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public Long getId() {

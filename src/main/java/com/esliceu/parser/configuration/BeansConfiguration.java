@@ -12,8 +12,8 @@ import java.io.File;
 public class BeansConfiguration {
     @Bean
     @Scope("prototype")
-    public Course group() {
-        return new Course();
+    public Group group() {
+        return new Group();
     }
 
     @Bean

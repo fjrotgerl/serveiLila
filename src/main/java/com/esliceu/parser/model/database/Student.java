@@ -14,8 +14,8 @@ public class Student {
     private String secondSurname;
 
     @ManyToOne
-    @JoinColumn(name = "groupCode")
-    private Course course;
+    @JoinColumn(name = "grupo_code")
+    private Group group;
 
     public Student() {}
 
@@ -52,11 +52,11 @@ public class Student {
         this.secondSurname = secondSurname;
     }
 
-    public Course getCourse() {
-        return course;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }
