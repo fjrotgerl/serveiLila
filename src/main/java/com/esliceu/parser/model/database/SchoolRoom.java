@@ -4,14 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Aula {
+public class SchoolRoom {
 
     @Id
     private Integer code;
 
     private String description;
 
-    public Aula(){}
+    public SchoolRoom(){}
 
     public Integer getCode() {
         return code;
