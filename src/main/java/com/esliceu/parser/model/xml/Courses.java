@@ -8,13 +8,13 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Courses {
     @XmlElement(name="CURS")
-    private List<Course> StudentSessions;
+    private List<Course> courses;
 
-    public List<Course> getStudentSessions() {
-        return StudentSessions;
+    public List<Course> getCourses() {
+        return courses;
     }
 
-    public void setStudentSessions(List<Course> studentSessions) {
-        StudentSessions = studentSessions;
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }

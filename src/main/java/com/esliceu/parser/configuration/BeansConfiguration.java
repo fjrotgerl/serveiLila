@@ -13,8 +13,8 @@ public class BeansConfiguration {
 
     @Bean
     @Scope("prototype")
-    public Group group() {
-        return new Group();
+    public Course group() {
+        return new Course();
     }
 
     @Bean
@@ -43,7 +43,7 @@ public class BeansConfiguration {
 
     @Bean
     @Scope("prototype")
-    public Aula aula(){ return new Aula();}
+    public SchoolRoom aula(){ return new SchoolRoom();}
 
 
     @Value("${files.xml.classpath}")

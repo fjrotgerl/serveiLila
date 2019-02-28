@@ -8,6 +8,9 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Course {
 
+    @XmlAttribute(name = "descripcio")
+    private String descripcio;
+
     @XmlElement(name="GRUP")
     private List<Group> Groups;
 
@@ -17,5 +20,13 @@ public class Course {
 
     public void setGroups(List<Group> groups) {
         Groups = groups;
+    }
+
+    public String getDescripcio() {
+        return descripcio;
+    }
+
+    public void setDescripcio(String descripcio) {
+        this.descripcio = descripcio;
     }
 }

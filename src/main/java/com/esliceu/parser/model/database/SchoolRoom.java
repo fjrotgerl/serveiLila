@@ -3,14 +3,14 @@ package com.esliceu.parser.model.database;
 import javax.persistence.*;
 
 @Entity
-public class Aula {
+public class SchoolRoom {
 
     @Id
     private Integer code;
 
     private String description;
 
-    public Aula(){}
+    public SchoolRoom(){}
 
     public Integer getCode() {
         return code;

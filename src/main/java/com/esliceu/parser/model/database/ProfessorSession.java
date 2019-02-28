@@ -15,7 +15,7 @@ public class ProfessorSession {
 
     @ManyToOne
     @JoinColumn(name = "groupCode")
-    private Group group;
+    private Course course;
 
     private int day;
     private String hour;
@@ -47,12 +47,12 @@ public class ProfessorSession {
         this.professor = professor;
     }
 
-    public Group getGroup() {
-        return group;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public Long getId() {

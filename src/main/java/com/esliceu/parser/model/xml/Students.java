@@ -10,14 +10,14 @@ import java.util.List;
 public class Students {
 
     @XmlElement(name="ALUMNE")
-    private List<Student> alumnes;
+    private List<Student> students;
 
 
-    public List<Student> getAlumnes() {
-        return alumnes;
+    public List<Student> getStudents() {
+        return students;
     }
 
-    public void setAlumnes(List<Student> alumnes) {
-        this.alumnes = alumnes;
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }

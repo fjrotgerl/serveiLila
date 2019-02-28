@@ -17,7 +17,7 @@ public class Professor {
     private String secondSurname;
 
     @OneToOne
-    private Group group;
+    private Course course;
 
     public Professor() {}
 
@@ -53,11 +53,11 @@ public class Professor {
         this.secondSurname = secondSurname;
     }
 
-    public Group getGroup() {
-        return group;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }
