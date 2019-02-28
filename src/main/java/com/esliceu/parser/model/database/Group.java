@@ -1,7 +1,6 @@
 package com.esliceu.parser.model.database;
 
 import javax.persistence.*;
-import java.util.Optional;
 
 @Entity
 @Table(name = "grupo")

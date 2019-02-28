@@ -8,25 +8,25 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Classroom {
 
-    @XmlElement(name="codi")
-    private Integer codi;
+    @XmlAttribute(name="codi")
+    private Integer code;
 
-    @XmlElement(name="descripcio")
-    private String descripcio;
+    @XmlAttribute(name="descripcio")
+    private String description;
 
     public Integer getCodi() {
-        return codi;
+        return code;
     }
 
     public void setCodi(Integer codi) {
-        this.codi = codi;
+        this.code = codi;
     }
 
     public String getDescripcio() {
-        return descripcio;
+        return description;
     }
 
     public void setDescripcio(String descripcio) {
-        this.descripcio = descripcio;
+        this.description = descripcio;
     }
 }
