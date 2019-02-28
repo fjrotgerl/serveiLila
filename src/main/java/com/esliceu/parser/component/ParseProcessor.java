@@ -36,7 +36,7 @@ public class ParseProcessor {
     private SessionStudentRepository sessionStudentRepository;
 
     @Autowired
-    private AulaRepository aulaRepository;
+    private ClassroomRepository classroomRepository;
 
 
     public Xmlparse getParser() {
@@ -53,6 +53,9 @@ public class ParseProcessor {
         Center data = parser.getData();
 
         Map<String,Group> groupsTutor = new HashMap<>();
+
+
+        System.out.println("Aulas añadidas");
 
         for (Courses courses : data.getCourses()) {
             for (Course studentSessions : courses.getStudentSessions()) {
@@ -159,24 +162,21 @@ public class ParseProcessor {
 
         System.out.println("Sessiones de alumno añadidos");
 
-
         //Sacar todas las aulas del centro y guardarlas en la base de datos
 
         for (Classrooms classrooms : data.getClassrooms()) {
             for (Classroom classroom : classrooms.getClassrooms()) {
 
                 Aula aula = new Aula();
+
                 aula.setCode(classroom.getCodi());
                 aula.setDescription(classroom.getDescripcio());
-                System.out.println(classroom.getDescripcio());
 
-                aulaRepository.save(aula);
+                classroomRepository.save(aula);
 
             }
 
         }
-
-        System.out.println("Aulas añadidas");
 
 
 
