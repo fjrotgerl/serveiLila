@@ -7,7 +7,7 @@ import java.util.List;
 
 @XmlRootElement(name = "CENTRE_EXPORT")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({ Teacher.class,Student.class, ScheduleStudents.class, ScheduleTeachers.class, Group.class })
+@XmlSeeAlso({ Teacher.class, Student.class, ScheduleStudents.class, ScheduleTeachers.class, Group.class, Classroom.class })
 public class Center {
 
     @XmlElement(name="PROFESSORS")
