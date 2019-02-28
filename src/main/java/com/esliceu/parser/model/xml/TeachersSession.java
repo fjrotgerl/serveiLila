@@ -14,9 +14,17 @@ public class TeachersSession {
     @XmlAttribute(name="grup")
     private Integer groupCode;
     @XmlAttribute(name="dia")
-    private int day;
+    private Integer day;
     @XmlAttribute(name="hora")
     private String hour;
+    @XmlAttribute(name = "durada")
+    private Integer durada;
+    @XmlAttribute(name = "curs")
+    private Integer curs;
+    @XmlAttribute(name = "submateria")
+    private Integer submateria;
+
+
 
 
     public String getProfessorCode() {
@@ -35,11 +43,11 @@ public class TeachersSession {
         this.groupCode = groupCode;
     }
 
-    public int getDay() {
+    public Integer getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(Integer day) {
         this.day = day;
     }
 
@@ -51,4 +59,15 @@ public class TeachersSession {
         this.hour = hour;
     }
 
+    public Integer getDurada() {return durada;}
+
+    public void setDurada(Integer durada) {this.durada = durada;}
+
+    public Integer getCurs() {return curs;}
+
+    public void setCurs(Integer curs) { this.curs = curs;}
+
+    public Integer getSubmateria() { return submateria;}
+
+    public void setSubmateria(Integer submateria) { this.submateria = submateria;}
 }

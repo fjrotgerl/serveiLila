@@ -5,15 +5,19 @@ import com.esliceu.parser.model.database.Group;
 import com.esliceu.parser.model.database.Student;
 import com.esliceu.parser.model.database.StudentSession;
 import com.esliceu.parser.model.database.*;
-import com.esliceu.parser.model.xml.*;
 import com.esliceu.parser.model.xml.Subject;
+import com.esliceu.parser.model.xml.*;
 import com.esliceu.parser.repository.*;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.ManagedSet;
 import org.springframework.stereotype.Component;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.xml.bind.JAXBException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class ParseProcessor {
@@ -44,6 +48,9 @@ public class ParseProcessor {
 
     @Autowired
     private SubjectRepository subjectRepository;
+
+    @Autowired
+    private DateTime dateTime;
 
 
     public Xmlparse getParser() {
@@ -160,7 +167,29 @@ public class ParseProcessor {
 
                 ProfessorSession professorSession = new ProfessorSession();
                 professorSession.setDay(teachersSession.getDay());
-                professorSession.setHour(teachersSession.getHour());
+
+                professorSession.setStartHour(teachersSession.getHour());
+
+                Integer durada = teachersSession.getDurada();
+                
+                professorSession.setDurada(durada);
+
+                DateTimeFormatter hm = DateTimeFormat.forPattern("HH:mm");
+                DateTime startHour = dateTime.parse(teachersSession.getHour(),hm);
+
+                DateTime endHour = startHour.plusMinutes(durada);
+
+                String formatedEndHour = String.format("%d:%02d",(endHour.getHourOfDay()),(endHour.getMinuteOfHour()));;
+
+                professorSession.setEndHour(formatedEndHour);
+
+                Optional<Course> course = courseRepository.findById(teachersSession.getCurs());
+
+                course.ifPresent(professorSession::setCourse);
+
+                Optional<com.esliceu.parser.model.database.Subject> subject = subjectRepository.findById(teachersSession.getSubmateria());
+
+                subject.ifPresent(professorSession::setSubject);
 
                 Optional<Group> group = groupRepository.findById(teachersSession.getGroupCode());
 

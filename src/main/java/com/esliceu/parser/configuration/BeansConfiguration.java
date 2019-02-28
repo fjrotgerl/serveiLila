@@ -1,12 +1,15 @@
 package com.esliceu.parser.configuration;
 
 import com.esliceu.parser.model.database.*;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 @Configuration
 public class BeansConfiguration {
@@ -45,6 +48,11 @@ public class BeansConfiguration {
     @Scope("prototype")
     public SchoolRoom aula(){ return new SchoolRoom();}
 
+    @Bean
+    @Scope("prototype")
+    public DateTime hourFormat(){
+        return new DateTime();
+    }
 
     @Value("${files.xml.classpath}")
     private String patch;
