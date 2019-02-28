@@ -19,7 +19,6 @@ public class Student {
 
     public Student() {}
 
-
     public String getCode() {
         return code;
     }

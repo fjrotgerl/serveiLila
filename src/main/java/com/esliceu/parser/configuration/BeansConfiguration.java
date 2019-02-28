@@ -10,6 +10,7 @@ import java.io.File;
 
 @Configuration
 public class BeansConfiguration {
+
     @Bean
     @Scope("prototype")
     public Group group() {
