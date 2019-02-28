@@ -171,7 +171,7 @@ public class ParseProcessor {
                 professorSession.setStartHour(teachersSession.getHour());
 
                 Integer durada = teachersSession.getDurada();
-                
+
                 professorSession.setDurada(durada);
 
                 DateTimeFormatter hm = DateTimeFormat.forPattern("HH:mm");
