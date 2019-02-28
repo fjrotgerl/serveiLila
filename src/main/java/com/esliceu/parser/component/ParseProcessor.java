@@ -54,7 +54,6 @@ public class ParseProcessor {
 
         Map<String,Group> groupsTutor = new HashMap<>();
 
-
         System.out.println("Aulas añadidas");
 
         for (Courses courses : data.getCourses()) {
