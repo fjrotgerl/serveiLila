@@ -13,9 +13,11 @@ public class StudentSession {
     @XmlAttribute(name="alumne")
     private String StudentCode;
     @XmlAttribute(name="dia")
-    private int day;
+    private Integer day;
     @XmlAttribute(name="hora")
     private String hour;
+    @XmlAttribute(name = "submateria")
+    private Integer submateria;
 
 
     public String getStudentCode() {
@@ -26,11 +28,11 @@ public class StudentSession {
         StudentCode = studentCode;
     }
 
-    public int getDay() {
+    public Integer getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(Integer day) {
         this.day = day;
     }
 
@@ -42,4 +44,11 @@ public class StudentSession {
         this.hour = hour;
     }
 
+    public Integer getSubmateria() {
+        return submateria;
+    }
+
+    public void setSubmateria(Integer submateria) {
+        this.submateria = submateria;
+    }
 }

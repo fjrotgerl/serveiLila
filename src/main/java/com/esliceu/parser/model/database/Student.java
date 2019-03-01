@@ -1,6 +1,7 @@
 package com.esliceu.parser.model.database;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Student {
@@ -16,6 +17,9 @@ public class Student {
     @ManyToOne
     @JoinColumn(name = "grupo_code")
     private Group group;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<StudentSession> studentSessions;
 
     public Student() {}
 
@@ -57,5 +61,13 @@ public class Student {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public Set<StudentSession> getStudentSessions() {
+        return studentSessions;
+    }
+
+    public void setStudentSessions(Set<StudentSession> studentSessions) {
+        this.studentSessions = studentSessions;
     }
 }

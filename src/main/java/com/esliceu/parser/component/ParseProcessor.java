@@ -15,9 +15,7 @@ import org.springframework.stereotype.Component;
 import org.joda.time.format.DateTimeFormatter;
 
 import javax.xml.bind.JAXBException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class ParseProcessor {
@@ -67,6 +65,8 @@ public class ParseProcessor {
         Center data = parser.getData();
 
         Map<String, Group> groupsTutor = new HashMap<>();
+
+        Map<String, Set<StudentSession>> studentToSessions = new HashMap<>();
 
 
         // Sacar los cursos, cada uno de los grupos que tienen esos cursos y meterlos en la base de datos
@@ -216,9 +216,17 @@ public class ParseProcessor {
                 studentSessionDB.setDay(studentSession.getDay());
                 studentSessionDB.setHour(studentSession.getHour());
 
-                Optional<Student> student = studentRepository.findById(studentSession.getStudentCode());
+                String studentCode = studentSession.getStudentCode();
+
+                Optional<Student> student = studentRepository.findById(studentCode);
+
                 student.ifPresent(studentSessionDB::setStudent);
 
+                Optional<com.esliceu.parser.model.database.Subject> subject = subjectRepository.findById(studentSession.getSubmateria());
+
+                subject.ifPresent(studentSessionDB::setSubject);
+
+                studentToSessions.computeIfAbsent(studentCode, k -> new HashSet<>()).add(studentSessionDB);
                 sessionStudentRepository.save(studentSessionDB);
 
             }
@@ -226,6 +234,16 @@ public class ParseProcessor {
 
         System.out.println("Sessiones de alumno añadidos");
 
+        studentToSessions.forEach((student, sessions) -> {
+            Optional<Student> promiseStudent = studentRepository.findById(student);
+            if (promiseStudent.isPresent()) {
+                Student studentDB = promiseStudent.get();
+                studentDB.setStudentSessions(sessions);
+                studentRepository.save(studentDB);
+            }
+        });
+
+        System.out.println("Añadido las sesiones a los estudiantes");
 
         //Sacar todas las aulas del centro y guardarlas en la base de datos
 
@@ -236,6 +254,12 @@ public class ParseProcessor {
                 schoolRoom.setCode(classroom.getCodi());
                 schoolRoom.setDescription(classroom.getDescripcio());
                 aulaRepository.save(schoolRoom);
+
+                Optional<Student> student = studentRepository.findById("9487DEAE6FEA19D1E040D70A59052593 ");
+
+                if (student.isPresent()){
+                    System.out.println(student.get().getStudentSessions());
+                }
 
             }
         }

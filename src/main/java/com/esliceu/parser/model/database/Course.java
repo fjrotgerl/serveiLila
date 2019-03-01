@@ -1,7 +1,7 @@
 package com.esliceu.parser.model.database;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 
 @Entity
@@ -11,7 +11,6 @@ public class Course {
     private Integer code;
 
     private String description;
-
 
     public Course(){
     }

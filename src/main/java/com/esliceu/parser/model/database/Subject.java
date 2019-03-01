@@ -15,6 +15,7 @@ public class Subject {
     @JoinColumn(name = "course_code")
     private Course course;
 
+
     public Integer getCode() {
         return code;
     }

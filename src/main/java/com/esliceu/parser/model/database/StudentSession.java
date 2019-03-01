@@ -12,6 +12,9 @@ public class StudentSession {
     @ManyToOne
     private Student student;
 
+    @ManyToOne
+    private Subject subject;
+
     private int day;
     private String hour;
 
@@ -47,5 +50,13 @@ public class StudentSession {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

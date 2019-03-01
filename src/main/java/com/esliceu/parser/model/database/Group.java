@@ -1,6 +1,7 @@
 package com.esliceu.parser.model.database;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "grupo")
@@ -14,6 +15,7 @@ public class Group {
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "course_code")
     private Course course;
+
 
     public Group() {}
 
@@ -34,4 +36,5 @@ public class Group {
     public void setCourse(Course course) {
         this.course = course;
     }
+    
 }
