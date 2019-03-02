@@ -1,6 +1,8 @@
 package com.esliceu.parser.configuration;
 
 import com.esliceu.parser.model.database.*;
+import com.esliceu.parser.utils.EndTimeParser;
+import com.esliceu.parser.utils.TimeParser;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -8,8 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 @Configuration
 public class BeansConfiguration {
@@ -54,6 +54,10 @@ public class BeansConfiguration {
         return new DateTime();
     }
 
+    @Bean
+    @Scope("prototype")
+    public TimeParser timeCalculator(){ return new EndTimeParser();}
+
     @Value("${files.xml.classpath}")
     private String patch;
 
@@ -64,4 +68,5 @@ public class BeansConfiguration {
     public File file() {
         return new File(patch + fileName);
     }
+
 }

@@ -18,6 +18,8 @@ public class StudentSession {
     private String hour;
     @XmlAttribute(name = "submateria")
     private Integer submateria;
+    @XmlAttribute(name = "durada")
+    private Integer durada;
 
 
     public String getStudentCode() {
@@ -51,4 +53,8 @@ public class StudentSession {
     public void setSubmateria(Integer submateria) {
         this.submateria = submateria;
     }
+
+    public Integer getDurada() {return durada;}
+
+    public void setDurada(Integer durada) {this.durada = durada;}
 }

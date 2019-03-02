@@ -1,6 +1,9 @@
 package com.esliceu.parser.model.database;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 @Entity
 public class StudentSession {
@@ -15,25 +18,29 @@ public class StudentSession {
     @ManyToOne
     private Subject subject;
 
-    private int day;
-    private String hour;
+    private String day;
+    private String StartHour;
+    private Integer durada;
+    private String endHour;
 
     public StudentSession() {}
 
-    public int getDay() {
+    public String getDay() {
         return day;
     }
 
     public void setDay(int day) {
-        this.day = day;
+        Locale spanishLocale = new Locale("es", "ES");
+        String dayName = DayOfWeek.of(day).getDisplayName(TextStyle.FULL,spanishLocale);
+        this.day = dayName;
     }
 
-    public String getHour() {
-        return hour;
+    public String getStartHour() {
+        return StartHour;
     }
 
-    public void setHour(String hour) {
-        this.hour = hour;
+    public void setStartHour(String startHour) {
+        this.StartHour = startHour;
     }
 
     public Student getStudent() {
@@ -59,4 +66,15 @@ public class StudentSession {
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
+
+    public void setDay(String day) {this.day = day;}
+
+    public Integer getDurada() {return durada;}
+
+    public void setDurada(Integer durada) {this.durada = durada;}
+
+    public String getEndHour() {return endHour;}
+
+    public void setEndHour(String endHour) {this.endHour = endHour;}
 }
+

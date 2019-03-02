@@ -18,9 +18,6 @@ public class Student {
     @JoinColumn(name = "grupo_code")
     private Group group;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<StudentSession> studentSessions;
-
     public Student() {}
 
     public String getCode() {
@@ -61,13 +58,5 @@ public class Student {
 
     public void setGroup(Group group) {
         this.group = group;
-    }
-
-    public Set<StudentSession> getStudentSessions() {
-        return studentSessions;
-    }
-
-    public void setStudentSessions(Set<StudentSession> studentSessions) {
-        this.studentSessions = studentSessions;
     }
 }

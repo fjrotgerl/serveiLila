@@ -8,6 +8,7 @@ import com.esliceu.parser.model.database.*;
 import com.esliceu.parser.model.xml.Subject;
 import com.esliceu.parser.model.xml.*;
 import com.esliceu.parser.repository.*;
+import com.esliceu.parser.utils.TimeParser;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,9 @@ public class ParseProcessor {
     @Autowired
     private DateTime dateTime;
 
+    @Autowired
+    private TimeParser timeCalculator;
+
 
     public Xmlparse getParser() {
         return parser;
@@ -65,8 +69,6 @@ public class ParseProcessor {
         Center data = parser.getData();
 
         Map<String, Group> groupsTutor = new HashMap<>();
-
-        Map<String, Set<StudentSession>> studentToSessions = new HashMap<>();
 
 
         // Sacar los cursos, cada uno de los grupos que tienen esos cursos y meterlos en la base de datos
@@ -168,20 +170,18 @@ public class ParseProcessor {
                 ProfessorSession professorSession = new ProfessorSession();
                 professorSession.setDay(teachersSession.getDay());
 
-                professorSession.setStartHour(teachersSession.getHour());
+                String startHour = teachersSession.getHour();
+                professorSession.setStartHour(startHour);
 
                 Integer durada = teachersSession.getDurada();
 
                 professorSession.setDurada(durada);
 
-                DateTimeFormatter hm = DateTimeFormat.forPattern("HH:mm");
-                DateTime startHour = dateTime.parse(teachersSession.getHour(),hm);
+                DateTime endDate = timeCalculator.addTime(durada,startHour);
 
-                DateTime endHour = startHour.plusMinutes(durada);
+                String endHour = timeCalculator.formatTime(endDate);
 
-                String formatedEndHour = String.format("%d:%02d",(endHour.getHourOfDay()),(endHour.getMinuteOfHour()));;
-
-                professorSession.setEndHour(formatedEndHour);
+                professorSession.setEndHour(endHour);
 
                 Optional<Course> course = courseRepository.findById(teachersSession.getCurs());
 
@@ -213,8 +213,22 @@ public class ParseProcessor {
             for(com.esliceu.parser.model.xml.StudentSession studentSession : scheduleStudents.getStudentSessions()){
 
                 StudentSession studentSessionDB = new StudentSession();
+
                 studentSessionDB.setDay(studentSession.getDay());
-                studentSessionDB.setHour(studentSession.getHour());
+
+                String startHour = studentSession.getHour();
+
+                studentSessionDB.setStartHour(startHour);
+
+                Integer durada = studentSession.getDurada();
+
+                studentSessionDB.setDurada(durada);
+
+                DateTime endDate = timeCalculator.addTime(durada,startHour);
+
+                String endHour = timeCalculator.formatTime(endDate);
+
+                studentSessionDB.setEndHour(endHour);
 
                 String studentCode = studentSession.getStudentCode();
 
@@ -226,24 +240,12 @@ public class ParseProcessor {
 
                 subject.ifPresent(studentSessionDB::setSubject);
 
-                studentToSessions.computeIfAbsent(studentCode, k -> new HashSet<>()).add(studentSessionDB);
                 sessionStudentRepository.save(studentSessionDB);
 
             }
         }
 
         System.out.println("Sessiones de alumno añadidos");
-
-        studentToSessions.forEach((student, sessions) -> {
-            Optional<Student> promiseStudent = studentRepository.findById(student);
-            if (promiseStudent.isPresent()) {
-                Student studentDB = promiseStudent.get();
-                studentDB.setStudentSessions(sessions);
-                studentRepository.save(studentDB);
-            }
-        });
-
-        System.out.println("Añadido las sesiones a los estudiantes");
 
         //Sacar todas las aulas del centro y guardarlas en la base de datos
 
@@ -254,12 +256,6 @@ public class ParseProcessor {
                 schoolRoom.setCode(classroom.getCodi());
                 schoolRoom.setDescription(classroom.getDescripcio());
                 aulaRepository.save(schoolRoom);
-
-                Optional<Student> student = studentRepository.findById("9487DEAE6FEA19D1E040D70A59052593 ");
-
-                if (student.isPresent()){
-                    System.out.println(student.get().getStudentSessions());
-                }
 
             }
         }
