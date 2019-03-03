@@ -10,13 +10,13 @@ import com.esliceu.parser.model.xml.*;
 import com.esliceu.parser.repository.*;
 import com.esliceu.parser.utils.TimeParser;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.joda.time.format.DateTimeFormatter;
 
 import javax.xml.bind.JAXBException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class ParseProcessor {
