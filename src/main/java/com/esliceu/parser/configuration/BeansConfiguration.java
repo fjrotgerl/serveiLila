@@ -1,5 +1,6 @@
 package com.esliceu.parser.configuration;
 
+import com.esliceu.parser.model.comunication.DataContainer;
 import com.esliceu.parser.model.database.*;
 import com.esliceu.parser.utils.EndTimeParser;
 import com.esliceu.parser.utils.TimeParser;
@@ -57,6 +58,7 @@ public class BeansConfiguration {
     @Bean
     @Scope("prototype")
     public TimeParser timeCalculator(){ return new EndTimeParser();}
+
 
     @Value("${files.xml.classpath}")
     private String patch;

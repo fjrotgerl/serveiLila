@@ -12,14 +12,14 @@ import com.esliceu.parser.utils.TimeParser;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Service
+@Component
 public class ParseProcessor {
 
     @Autowired
@@ -44,13 +44,10 @@ public class ParseProcessor {
     private SessionStudentRepository sessionStudentRepository;
 
     @Autowired
-    private AulaRepository aulaRepository;
+    private SchoolRoomRepository schoolRoomRepository;
 
     @Autowired
     private SubjectRepository subjectRepository;
-
-    @Autowired
-    private DateTime dateTime;
 
     @Autowired
     private TimeParser timeCalculator;
@@ -257,7 +254,7 @@ public class ParseProcessor {
                 SchoolRoom schoolRoom = new SchoolRoom();
                 schoolRoom.setCode(classroom.getCodi());
                 schoolRoom.setDescription(classroom.getDescripcio());
-                aulaRepository.save(schoolRoom);
+                schoolRoomRepository.save(schoolRoom);
 
             }
         }

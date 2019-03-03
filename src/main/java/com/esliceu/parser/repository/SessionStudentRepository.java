@@ -11,6 +11,4 @@ import java.util.Set;
 @Repository
 public interface SessionStudentRepository extends CrudRepository<StudentSession, Long> {
 
-    Set<StudentSession> findByStudent(Student student);
-
 }

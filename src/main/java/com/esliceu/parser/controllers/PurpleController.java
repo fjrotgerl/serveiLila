@@ -2,11 +2,16 @@ package com.esliceu.parser.controllers;
 
 import com.esliceu.parser.component.ParseProcessor;
 import com.esliceu.parser.component.Xmlparse;
+import com.esliceu.parser.model.comunication.DataContainer;
 import com.esliceu.parser.model.database.Student;
 import com.esliceu.parser.model.xml.Center;
-import com.esliceu.parser.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +21,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Set;
 
 @RestController
 public class PurpleController {
@@ -25,31 +29,10 @@ public class PurpleController {
     Xmlparse xmlparse;
 
     @Autowired
-    private CourseRepository courseRepository;
-
-    @Autowired
-    private GroupRepository groupRepository;
-
-    @Autowired
-    private StudentRepository studentRepository;
-
-    @Autowired
-    private ProfessorRepository professorRepository;
-
-    @Autowired
-    private SessionProfessorRepository sessionProfessorRepository;
-
-    @Autowired
-    private SessionStudentRepository sessionStudentRepository;
-
-    @Autowired
-    private AulaRepository aulaRepository;
-
-    @Autowired
-    private SubjectRepository subjectRepository;
-
-    @Autowired
     ParseProcessor parseProcessor;
+
+    @Autowired
+    DataContainer dataContainer;
 
     @Value("${files.xml.classpath}")
     private String path;
@@ -75,11 +58,15 @@ public class PurpleController {
                 try {
                     parseProcessor.init();
 
-                    Iterable<Student> students = studentRepository.findAll();
-                    RestTemplate restTemplate = new RestTemplate();
-                    restTemplate.postForLocation("http://localhost:8080/groc",students);
+                    dataContainer.poblateData();
 
-                    return "Se ha subido el archivo de forma correcta actualizando la base de datos" + fileName + "!";
+                    RestTemplate restTemplate = new RestTemplate();
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    HttpEntity<Object> requestEntity = new HttpEntity<Object>(dataContainer,headers);
+                    restTemplate.put("http://localhost:8080/groc",dataContainer);
+
+                    return "Se ha subido el archivo de forma correcta y ahora se esta actualizando la base de datos" + fileName + "!";
                 } catch (JAXBException e) {
                     return "Ha habido un fallo al intentar actualizar la base de datos";
                 }
@@ -101,10 +88,10 @@ public class PurpleController {
     }
 
 
-    @RequestMapping(value="/groc",method = RequestMethod.POST)
-    public void  MockGroc(@RequestParam("Students") Iterable<Student> students){
+    @RequestMapping(value="/groc",method = RequestMethod.PUT)
+    public void  MockGroc(@RequestParam("Students") DataContainer dataContainer){
 
-        System.out.println(students);
+        System.out.println(dataContainer);
     }
 
 
