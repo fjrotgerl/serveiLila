@@ -11,14 +11,15 @@ import com.esliceu.parser.repository.*;
 import com.esliceu.parser.utils.TimeParser;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
 import javax.xml.bind.JAXBException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Component
+@Service
 public class ParseProcessor {
 
     @Autowired
@@ -63,6 +64,7 @@ public class ParseProcessor {
         this.parser = parser;
     }
 
+    @Async("asyncExecutor")
     public void init() throws JAXBException {
 
         //Recogemos el objeto que contiene los datos a guardar

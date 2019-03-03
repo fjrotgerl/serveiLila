@@ -1,13 +1,12 @@
 package com.esliceu.parser.controllers;
 
+import com.esliceu.parser.component.ParseProcessor;
 import com.esliceu.parser.component.Xmlparse;
 import com.esliceu.parser.model.xml.Center;
+import com.esliceu.parser.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.bind.JAXBException;
@@ -16,17 +15,45 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-@org.springframework.web.bind.annotation.RestController
-public class RestController {
+@RestController
+public class PurpleController {
 
     @Autowired
     Xmlparse xmlparse;
+
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private ProfessorRepository professorRepository;
+
+    @Autowired
+    private SessionProfessorRepository sessionProfessorRepository;
+
+    @Autowired
+    private SessionStudentRepository sessionStudentRepository;
+
+    @Autowired
+    private AulaRepository aulaRepository;
+
+    @Autowired
+    private SubjectRepository subjectRepository;
+
+    @Autowired
+    ParseProcessor parseProcessor;
 
     @Value("${files.xml.classpath}")
     private String path;
 
     @Value("${files.xml}")
     private String fileName;
+
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public @ResponseBody String provideUploadInfor(){
@@ -42,7 +69,12 @@ public class RestController {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path+fileName)));
                 stream.write(bytes);
                 stream.close();
-                return "Se ha subido el archivo de forma correcta" + fileName + "!";
+                try {
+                    parseProcessor.init();
+                    return "Se ha subido el archivo de forma correcta actualizando la base de datos" + fileName + "!";
+                } catch (JAXBException e) {
+                    return "Ha habido un fallo al intentar actualizar la base de datos";
+                }
 
             } catch (IOException e) {
                 return "Ha habido un fallo al subir el archivo" + e.getMessage();
@@ -59,4 +91,7 @@ public class RestController {
     public Center center() throws JAXBException {
         return this.xmlparse.getData();
     }
+
+
+
 }
