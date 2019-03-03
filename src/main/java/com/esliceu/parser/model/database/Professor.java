@@ -1,9 +1,7 @@
 package com.esliceu.parser.model.database;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Professor {
@@ -18,6 +16,11 @@ public class Professor {
 
     @OneToOne
     private Group group;
+
+    @OneToMany(mappedBy = "professor")
+    private Set<ProfessorSession> professorSessions;
+
+
 
     public Professor() {}
 
@@ -60,4 +63,16 @@ public class Professor {
     public void setGroup(Group group) {
         this.group = group;
     }
+
+    public String getCode() {return code;}
+
+    public void setCode(String code) {this.code = code; }
+
+    public String getName() {return name;}
+
+    public void setName(String name) {this.name = name; }
+
+    public Set<ProfessorSession> getProfessorSessions() {return professorSessions; }
+
+    public void setProfessorSessions(Set<ProfessorSession> professorSessions) {this.professorSessions = professorSessions;}
 }

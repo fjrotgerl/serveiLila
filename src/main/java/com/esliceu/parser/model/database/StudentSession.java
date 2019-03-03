@@ -13,10 +13,11 @@ public class StudentSession {
     private Long id;
 
     @ManyToOne
-    private Student student;
+    private Subject subject;
 
     @ManyToOne
-    private Subject subject;
+    @JoinColumn(name = "student_code")
+    private Student student;
 
     private String day;
     private String StartHour;
@@ -41,14 +42,6 @@ public class StudentSession {
 
     public void setStartHour(String startHour) {
         this.StartHour = startHour;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
     }
 
     public Long getId() {

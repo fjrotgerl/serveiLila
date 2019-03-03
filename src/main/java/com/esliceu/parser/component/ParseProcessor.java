@@ -70,6 +70,10 @@ public class ParseProcessor {
 
         Map<String, Group> groupsTutor = new HashMap<>();
 
+        Map<String, Set<StudentSession>> sessionsOfStudent = new HashMap<>();
+
+        Map<String, Set<ProfessorSession>> sessionsOfProfessor = new HashMap<>();
+
 
         // Sacar los cursos, cada uno de los grupos que tienen esos cursos y meterlos en la base de datos
         for (Courses courses : data.getCourses()){
@@ -168,6 +172,7 @@ public class ParseProcessor {
             for (TeachersSession teachersSession: scheduleTeachers.getTeachersSessions()){
 
                 ProfessorSession professorSession = new ProfessorSession();
+
                 professorSession.setDay(teachersSession.getDay());
 
                 String startHour = teachersSession.getHour();
@@ -183,9 +188,8 @@ public class ParseProcessor {
 
                 professorSession.setEndHour(endHour);
 
-                Optional<Course> course = courseRepository.findById(teachersSession.getCurs());
+                String professorCode = teachersSession.getProfessorCode();
 
-                course.ifPresent(professorSession::setCourse);
 
                 Optional<com.esliceu.parser.model.database.Subject> subject = subjectRepository.findById(teachersSession.getSubmateria());
 
@@ -195,8 +199,7 @@ public class ParseProcessor {
 
                 group.ifPresent(professorSession::setGroup);
 
-                Optional<Professor> professor = professorRepository.findById(teachersSession.getProfessorCode());
-                professor.ifPresent(professorSession::setProfessor);
+                sessionsOfProfessor.computeIfAbsent(professorCode, k -> new HashSet<>()).add(professorSession);
 
                 sessionProfessorRepository.save(professorSession);
             }
@@ -232,13 +235,13 @@ public class ParseProcessor {
 
                 String studentCode = studentSession.getStudentCode();
 
-                Optional<Student> student = studentRepository.findById(studentCode);
-
-                student.ifPresent(studentSessionDB::setStudent);
+                //Añadir studentCode al hasmap
 
                 Optional<com.esliceu.parser.model.database.Subject> subject = subjectRepository.findById(studentSession.getSubmateria());
 
                 subject.ifPresent(studentSessionDB::setSubject);
+
+                sessionsOfStudent.computeIfAbsent(studentCode, k -> new HashSet<>()).add(studentSessionDB);
 
                 sessionStudentRepository.save(studentSessionDB);
 
@@ -261,6 +264,29 @@ public class ParseProcessor {
         }
 
         System.out.println("Aulas añadidas");
+
+        sessionsOfProfessor.forEach((professor,sessions)->{
+            Optional<Professor> promiseProfessor = professorRepository.findById(professor);
+            promiseProfessor.ifPresent(professorResponse ->{
+                professorResponse.setProfessorSessions(sessions);
+                professorRepository.save(professorResponse);
+            } );
+        });
+
+        System.out.println("Añadida lista de clases a cada profesor");
+
+        sessionsOfStudent.forEach((student,sessions)->{
+            Optional<Student> promiseStudent = studentRepository.findById(student);
+            promiseStudent.ifPresent(studentResponse ->{
+                studentResponse.setStudentSessions(sessions);
+                studentRepository.save(studentResponse);
+            } );
+        });
+
+        System.out.println("Añadida lista de clases a cada alumno");
+
+        Student student = studentRepository.findByIdAndFetchSessionsEagerly("944BA5381AB6E45FE040D70A59055935");
+        System.out.println(student);
 
     }
 }

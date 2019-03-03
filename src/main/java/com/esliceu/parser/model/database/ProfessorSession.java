@@ -13,20 +13,16 @@ public class ProfessorSession {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "professor_code")
-    private Professor professor;
-
-    @ManyToOne
     @JoinColumn(name = "grupo_code")
     private Group group;
 
     @ManyToOne
-    @JoinColumn(name = "course_code")
-    private Course course;
-
-    @ManyToOne
     @JoinColumn(name = "subject_code")
     private Subject subject;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_code")
+    private Professor professor;
 
     private String day;
     private String startHour;
@@ -57,13 +53,6 @@ public class ProfessorSession {
         this.startHour = startHour;
     }
 
-    public Professor getProfessor() {
-        return professor;
-    }
-
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
-    }
 
     public Group getGroup() {
         return group;
@@ -79,14 +68,6 @@ public class ProfessorSession {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
     }
 
     public Subject getSubject() {
