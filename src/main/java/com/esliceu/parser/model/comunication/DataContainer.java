@@ -55,7 +55,7 @@ public class DataContainer {
         this.professors = professorRepository.findAll();
         this.professorSessions = sessionProfessorRepository.findAll();
         this.students = studentRepository.findAll();
-        this.studentSessions = sessionStudentRepository.findAll();
+        //this.studentSessions = sessionStudentRepository.findAll();
         this.schoolRooms = schoolRoomRepository.findAll();
         this.subjects = subjectRepository.findAll();
 

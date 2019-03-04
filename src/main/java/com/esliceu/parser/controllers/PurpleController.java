@@ -3,18 +3,16 @@ package com.esliceu.parser.controllers;
 import com.esliceu.parser.component.ParseProcessor;
 import com.esliceu.parser.component.Xmlparse;
 import com.esliceu.parser.model.comunication.DataContainer;
-import com.esliceu.parser.model.database.Student;
 import com.esliceu.parser.model.xml.Center;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.xml.bind.JAXBException;
 import java.io.BufferedOutputStream;
@@ -60,11 +58,28 @@ public class PurpleController {
 
                     dataContainer.poblateData();
 
-                    RestTemplate restTemplate = new RestTemplate();
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.setContentType(MediaType.APPLICATION_JSON);
-                    HttpEntity<Object> requestEntity = new HttpEntity<Object>(dataContainer,headers);
-                    restTemplate.put("http://localhost:8080/groc",dataContainer);
+
+                    BodyInserter<DataContainer, ReactiveHttpOutputMessage> inserter3
+                            = BodyInserters.fromObject(dataContainer);
+
+                    WebClient client3 = WebClient
+                            .builder()
+                            .baseUrl("http://localhost:8080")
+                            .build();
+
+                    WebClient.RequestBodySpec uri1 = client3
+                            .method(HttpMethod.PUT)
+                            .uri("/groc");
+
+                   String response1 = uri1
+                            .body(inserter3)
+                            .retrieve()
+                            .bodyToMono(String.class)
+                            .block();
+
+                    System.out.println(response1);
+
+
 
                     return "Se ha subido el archivo de forma correcta y ahora se esta actualizando la base de datos" + fileName + "!";
                 } catch (JAXBException e) {
@@ -89,9 +104,11 @@ public class PurpleController {
 
 
     @RequestMapping(value="/groc",method = RequestMethod.PUT)
-    public void  MockGroc(@RequestParam("Students") DataContainer dataContainer){
+    public String  MockGroc(@RequestBody DataContainer dataContainer){
 
         System.out.println(dataContainer);
+
+        return "works";
     }
 
 
