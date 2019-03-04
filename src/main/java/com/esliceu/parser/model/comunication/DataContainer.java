@@ -3,7 +3,11 @@ package com.esliceu.parser.model.comunication;
 import com.esliceu.parser.model.database.*;
 import com.esliceu.parser.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class DataContainer {
@@ -13,7 +17,7 @@ public class DataContainer {
     private Iterable<Professor> professors;
     private Iterable<ProfessorSession> professorSessions;
     private Iterable<Student> students;
-    private Iterable<StudentSession> studentSessions;
+    private List studentSessions;
     private Iterable<SchoolRoom> schoolRooms;
     private Iterable<Subject> subjects;
 
@@ -41,8 +45,8 @@ public class DataContainer {
     @Autowired
     private SubjectRepository subjectRepository;
 
-    @Autowired
-    private DataContainer dataContainer;
+    @Value("http:/localhost:8080/page")
+    String page;
 
     public DataContainer(){
 
@@ -55,7 +59,7 @@ public class DataContainer {
         this.professors = professorRepository.findAll();
         this.professorSessions = sessionProfessorRepository.findAll();
         this.students = studentRepository.findAll();
-        //this.studentSessions = sessionStudentRepository.findAll();
+        this.studentSessions = sessionStudentRepository.findAllByOrderById(PageRequest.of(0,20));
         this.schoolRooms = schoolRoomRepository.findAll();
         this.subjects = subjectRepository.findAll();
 
@@ -105,7 +109,7 @@ public class DataContainer {
         return studentSessions;
     }
 
-    public void setStudentSessions(Iterable<StudentSession> studentSessions) {
+    public void setStudentSessions(List studentSessions) {
         this.studentSessions = studentSessions;
     }
 
