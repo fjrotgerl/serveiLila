@@ -3,22 +3,28 @@ package com.esliceu.parser.controllers;
 import com.esliceu.parser.component.ParseProcessor;
 import com.esliceu.parser.component.Xmlparse;
 import com.esliceu.parser.model.comunication.DataContainer;
+import com.esliceu.parser.model.database.StudentSession;
 import com.esliceu.parser.model.xml.Center;
+import com.esliceu.parser.repository.SessionStudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.xml.bind.JAXBException;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class PurpleController {
@@ -31,6 +37,9 @@ public class PurpleController {
 
     @Autowired
     DataContainer dataContainer;
+
+    @Autowired
+    SessionStudentRepository sessionStudentRepository;
 
     @Value("${files.xml.classpath}")
     private String path;
@@ -108,7 +117,30 @@ public class PurpleController {
 
         System.out.println(dataContainer);
 
+        RestTemplate restTemplate = new RestTemplate();
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(dataContainer.getPage())
+                .queryParam("start",20)
+                .queryParam("end", 20);
+
+        restTemplate.getForEntity(builder.toUriString(),String.class);
+
+
         return "works";
+    }
+
+    @RequestMapping(value="/studentSessions",method = RequestMethod.GET)
+    public String pagination(@RequestParam(value = "start") Integer page,@RequestParam(value = "end") Integer pageEnd){
+
+        System.out.println(page);
+        System.out.println(pageEnd);
+
+        List<StudentSession> students = sessionStudentRepository.findAllByOrderById(PageRequest.of(page,pageEnd));
+
+        System.out.println(students);
+        return "workkkkk";
+
+
     }
 
 

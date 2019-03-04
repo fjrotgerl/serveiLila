@@ -20,6 +20,7 @@ public class DataContainer {
     private List studentSessions;
     private Iterable<SchoolRoom> schoolRooms;
     private Iterable<Subject> subjects;
+    private Long numberOfStudentSessions;
 
     @Autowired
     private CourseRepository courseRepository;
@@ -45,7 +46,7 @@ public class DataContainer {
     @Autowired
     private SubjectRepository subjectRepository;
 
-    @Value("http:/localhost:8080/page")
+    @Value("${enpoint.pages}")
     String page;
 
     public DataContainer(){
@@ -59,9 +60,10 @@ public class DataContainer {
         this.professors = professorRepository.findAll();
         this.professorSessions = sessionProfessorRepository.findAll();
         this.students = studentRepository.findAll();
-        this.studentSessions = sessionStudentRepository.findAllByOrderById(PageRequest.of(0,20));
+        this.studentSessions = sessionStudentRepository.findAllByOrderById(PageRequest.of(0,50000));
         this.schoolRooms = schoolRoomRepository.findAll();
         this.subjects = subjectRepository.findAll();
+        this.numberOfStudentSessions = sessionStudentRepository.count();
 
     }
 
@@ -127,5 +129,21 @@ public class DataContainer {
 
     public void setSubjects(Iterable<Subject> subjects) {
         this.subjects = subjects;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
+    }
+
+    public Long getNumberOfStudentSessions() {
+        return numberOfStudentSessions;
+    }
+
+    public void setNumberOfStudentSessions(Long numberOfStudentSessions) {
+        this.numberOfStudentSessions = numberOfStudentSessions;
     }
 }
