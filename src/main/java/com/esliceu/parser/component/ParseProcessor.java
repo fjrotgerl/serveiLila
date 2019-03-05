@@ -1,5 +1,6 @@
 package com.esliceu.parser.component;
 
+import com.esliceu.parser.model.comunication.DataContainer;
 import com.esliceu.parser.model.database.Course;
 import com.esliceu.parser.model.database.Group;
 import com.esliceu.parser.model.database.Student;
@@ -18,6 +19,7 @@ import javax.xml.bind.JAXBException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class ParseProcessor {
@@ -52,6 +54,9 @@ public class ParseProcessor {
     @Autowired
     private TimeParser timeCalculator;
 
+    @Autowired
+    private DataContainer dataContainer;
+
 
     public Xmlparse getParser() {
         return parser;
@@ -62,7 +67,7 @@ public class ParseProcessor {
     }
 
     @Async("asyncExecutor")
-    public void init() throws JAXBException {
+    public CompletableFuture<DataContainer> init() throws JAXBException,InterruptedException {
 
         //Recogemos el objeto que contiene los datos a guardar
         Center data = parser.getData();
@@ -260,6 +265,10 @@ public class ParseProcessor {
         }
 
         System.out.println("Aulas añadidas");
+
+        dataContainer.poblateData();
+
+        return CompletableFuture.completedFuture(dataContainer);
 
     }
 }

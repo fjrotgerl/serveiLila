@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class PurpleController {
@@ -63,9 +65,20 @@ public class PurpleController {
                 stream.write(bytes);
                 stream.close();
                 try {
-                    parseProcessor.init();
 
-                    dataContainer.poblateData();
+                    try {
+
+                        CompletableFuture<DataContainer> dataContainerCompletableFuture = parseProcessor.init();
+                        dataContainer = dataContainerCompletableFuture.get();
+
+                    } catch (InterruptedException e) {
+
+                        return "Ha habido un error para actualizar la base de datos";
+
+                    } catch (ExecutionException e) {
+
+                        return "No se ha podido resolver el objeto contenedor de daots";
+                    }
 
 
                     BodyInserter<DataContainer, ReactiveHttpOutputMessage> inserter3
