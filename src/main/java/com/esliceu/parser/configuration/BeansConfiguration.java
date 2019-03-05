@@ -1,5 +1,6 @@
 package com.esliceu.parser.configuration;
 
+import com.esliceu.parser.model.comunication.AsyncProcessor;
 import com.esliceu.parser.model.comunication.DataContainer;
 import com.esliceu.parser.model.database.*;
 import com.esliceu.parser.utils.EndTimeParser;
@@ -58,6 +59,10 @@ public class BeansConfiguration {
     @Bean
     @Scope("prototype")
     public TimeParser timeCalculator(){ return new EndTimeParser();}
+
+    @Bean
+    @Scope("prototype")
+    public AsyncProcessor asyncProcessor(){ return  new AsyncProcessor();}
 
 
     @Value("${files.xml.classpath}")

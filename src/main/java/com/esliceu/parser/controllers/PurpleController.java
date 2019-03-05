@@ -2,6 +2,7 @@ package com.esliceu.parser.controllers;
 
 import com.esliceu.parser.component.ParseProcessor;
 import com.esliceu.parser.component.Xmlparse;
+import com.esliceu.parser.model.comunication.AsyncProcessor;
 import com.esliceu.parser.model.comunication.DataContainer;
 import com.esliceu.parser.model.database.StudentSession;
 import com.esliceu.parser.model.xml.Center;
@@ -20,10 +21,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.xml.bind.JAXBException;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -43,6 +41,9 @@ public class PurpleController {
     @Autowired
     SessionStudentRepository sessionStudentRepository;
 
+    @Autowired
+    AsyncProcessor asyncProcessor;
+
     @Value("${files.xml.classpath}")
     private String path;
 
@@ -56,67 +57,47 @@ public class PurpleController {
     }
 
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
-    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file){
-        if (!file.isEmpty()){
+    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file) {
+
+        if (!file.isEmpty()) {
             try {
 
                 byte[] bytes = file.getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path+fileName)));
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path + fileName)));
                 stream.write(bytes);
                 stream.close();
-                try {
 
-                    try {
-
-                        CompletableFuture<DataContainer> dataContainerCompletableFuture = parseProcessor.init();
-                        dataContainer = dataContainerCompletableFuture.get();
-
-                    } catch (InterruptedException e) {
-
-                        return "Ha habido un error para actualizar la base de datos";
-
-                    } catch (ExecutionException e) {
-
-                        return "No se ha podido resolver el objeto contenedor de daots";
-                    }
-
-
-                    BodyInserter<DataContainer, ReactiveHttpOutputMessage> inserter3
-                            = BodyInserters.fromObject(dataContainer);
-
-                    WebClient client3 = WebClient
-                            .builder()
-                            .baseUrl("http://localhost:8080")
-                            .build();
-
-                    WebClient.RequestBodySpec uri1 = client3
-                            .method(HttpMethod.PUT)
-                            .uri("/groc");
-
-                   String response1 = uri1
-                            .body(inserter3)
-                            .retrieve()
-                            .bodyToMono(String.class)
-                            .block();
-
-                    System.out.println(response1);
+                asyncProcessor.updateDatabaseAsync();
 
 
 
-                    return "Se ha subido el archivo de forma correcta y ahora se esta actualizando la base de datos" + fileName + "!";
-                } catch (JAXBException e) {
-                    return "Ha habido un fallo al intentar actualizar la base de datos";
-                }
+                return "Se ha subido el archivo de forma correcta y ahora se esta actualizando la base de datos" + fileName + "!";
+
+            } catch (FileNotFoundException e) {
+
+                return "No se ha subido ningun archivo"+ e;
 
             } catch (IOException e) {
-                return "Ha habido un fallo al subir el archivo" + e.getMessage();
-            }
-        }
 
-        else {
+                return "Ha habido un problema al leer el archivo" + e;
+
+            } catch (InterruptedException e) {
+
+                return "Ha habido un problema al recuperar datos de la base" +e ;
+
+            } catch (ExecutionException e) {
+
+                return "Ha habido un problema al parsear el XML" +e ;
+
+            } catch (JAXBException e) {
+
+                return "Ha habido un problema cogiendo el objeto central del XML" +e;
+            }
+
+        } else {
+
             return "Ha habido un fallo al subir el archivo por un error de file.isEmpty por favor avise al administrador del sistmema";
         }
-
     }
 
     @RequestMapping(value = "/getData", method = RequestMethod.POST)
