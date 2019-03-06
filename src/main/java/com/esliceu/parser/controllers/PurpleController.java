@@ -10,20 +10,14 @@ import com.esliceu.parser.repository.SessionStudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.BodyInserter;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -63,6 +57,7 @@ public class PurpleController {
             try {
 
                 byte[] bytes = file.getBytes();
+
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path + fileName)));
                 stream.write(bytes);
                 stream.close();
@@ -107,7 +102,7 @@ public class PurpleController {
 
 
     @RequestMapping(value="/groc",method = RequestMethod.PUT)
-    public String  MockGroc(@RequestBody DataContainer dataContainer){
+    public String  mockGroc(@RequestBody DataContainer dataContainer){
 
         System.out.println(dataContainer);
 
@@ -124,19 +119,16 @@ public class PurpleController {
     }
 
     @RequestMapping(value="/studentSessions",method = RequestMethod.GET)
-    public String pagination(@RequestParam(value = "start") Integer page,@RequestParam(value = "end") Integer pageEnd){
+    public List<StudentSession> pagination(@RequestParam(value = "start") Integer page, @RequestParam(value = "end") Integer pageEnd){
 
         System.out.println(page);
         System.out.println(pageEnd);
 
         List<StudentSession> students = sessionStudentRepository.findAllByOrderById(PageRequest.of(page,pageEnd));
 
-        System.out.println(students);
-        return "workkkkk";
+        return students;
 
 
     }
-
-
 
 }

@@ -19,7 +19,7 @@ public class StudentSession {
     private Subject subject;
 
     private String day;
-    private String StartHour;
+    private String startHour;
     private Integer durada;
     private String endHour;
 
@@ -36,11 +36,11 @@ public class StudentSession {
     }
 
     public String getStartHour() {
-        return StartHour;
+        return startHour;
     }
 
     public void setStartHour(String startHour) {
-        this.StartHour = startHour;
+        this.startHour = startHour;
     }
 
     public Student getStudent() {
