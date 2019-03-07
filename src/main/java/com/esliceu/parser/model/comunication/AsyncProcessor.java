@@ -3,6 +3,7 @@ package com.esliceu.parser.model.comunication;
 
 import com.esliceu.parser.component.ParseProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.scheduling.annotation.Async;
@@ -23,6 +24,11 @@ public class AsyncProcessor {
     @Autowired
     DataContainer dataContainer;
 
+    @Value("${endpoint.groc}")
+    String endpointGroc;
+
+    @Value("${ip.groc}")
+    String ipGroc;
 
     public AsyncProcessor() {
     }
@@ -40,12 +46,12 @@ public class AsyncProcessor {
 
         WebClient client3 = WebClient
                 .builder()
-                .baseUrl("http://localhost:8080")
+                .baseUrl(ipGroc)
                 .build();
 
         WebClient.RequestBodySpec uri1 = client3
                 .method(HttpMethod.PUT)
-                .uri("/groc");
+                .uri(endpointGroc);
 
         String response1 = uri1
                 .body(inserter3)

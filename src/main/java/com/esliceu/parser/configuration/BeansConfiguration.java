@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 
@@ -63,6 +64,10 @@ public class BeansConfiguration {
     @Bean
     @Scope("prototype")
     public AsyncProcessor asyncProcessor(){ return  new AsyncProcessor();}
+
+    @Bean
+    @Scope("prototype")
+    public RestTemplate restTemplate(){ return new RestTemplate();}
 
 
     @Value("${files.xml.classpath}")

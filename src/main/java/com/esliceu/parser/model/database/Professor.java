@@ -21,11 +21,11 @@ public class Professor {
 
     public Professor() {}
 
-    public String getCodi() {
+    public String getCode() {
         return code;
     }
 
-    public void setCodi(String code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

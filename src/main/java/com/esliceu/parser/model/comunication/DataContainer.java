@@ -46,7 +46,7 @@ public class DataContainer {
     @Autowired
     private SubjectRepository subjectRepository;
 
-    @Value("${enpoint.pages}")
+    @Value("${endpoint.pages}")
     String page;
 
     public DataContainer(){
