@@ -128,8 +128,8 @@ public class ParseProcessor {
             for (Teacher teacher : teachers.getTeacher()) {
 
                 Professor professor = new Professor();
-                professor.setCodi(teacher.getCode());
-                professor.setNom(teacher.getName());
+                professor.setCode(teacher.getCode());
+                professor.setName(teacher.getName());
                 professor.setFirstSurname(teacher.getFirstSurname());
                 professor.setSecondSurname(teacher.getFirstSurname());
                 professor.setGroup(groupsTutor.get(teacher.getCode()));

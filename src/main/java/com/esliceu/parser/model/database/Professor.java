@@ -29,11 +29,11 @@ public class Professor {
         this.code = code;
     }
 
-    public String getNom() {
+    public String getName() {
         return name;
     }
 
-    public void setNom(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
