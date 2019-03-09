@@ -60,7 +60,7 @@ public class DataContainer {
         this.professors = professorRepository.findAll();
         this.professorSessions = sessionProfessorRepository.findAll();
         this.students = studentRepository.findAll();
-        this.studentSessions = sessionStudentRepository.findAllByOrderById(PageRequest.of(0,50000));
+        this.studentSessions = sessionStudentRepository.findAllByOrderById(PageRequest.of(0,1000));
         this.schoolRooms = schoolRoomRepository.findAll();
         this.subjects = subjectRepository.findAll();
         this.numberOfStudentSessions = sessionStudentRepository.count();

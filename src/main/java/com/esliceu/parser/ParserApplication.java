@@ -21,7 +21,6 @@ public class ParserApplication {
     @Bean
     public CommandLineRunner demo() {
         return (args) -> {
-            //parseProcessor.init();
         };
     }
 }

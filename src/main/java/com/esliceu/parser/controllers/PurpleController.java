@@ -52,7 +52,7 @@ public class PurpleController {
     @Value("${files.xml}")
     private String fileName;
 
-    @Value("${enpoint.blau}")
+    @Value("${endpoint.blau}")
     private String endBlau;
 
     @Value("${ip.blau}")
@@ -72,7 +72,7 @@ public class PurpleController {
 
                 byte[] bytes = file.getBytes();
 
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path + fileName)));
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fileName)));
                 stream.write(bytes);
                 stream.close();
 
@@ -110,6 +110,7 @@ public class PurpleController {
     @RequestMapping(value="/studentSessions",method = RequestMethod.GET)
     public List<StudentSession> pagination(@RequestParam(value = "start") Integer page, @RequestParam(value = "end") Integer pageEnd){
 
+        System.out.println("Groc calling ");
         List<StudentSession> students = sessionStudentRepository.findAllByOrderById(PageRequest.of(page,pageEnd));
 
         return students;
